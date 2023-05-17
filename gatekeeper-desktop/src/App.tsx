@@ -78,6 +78,7 @@ function App() {
 
         {qrCode && <img src={encodeSVGAsDataURI(qrCode)} alt="QR Code" />}
       </Section>
+
       <Section title="Gatekeepers List" id="gatekeepers-list">
         <div className="row">
           {gatekeepers.map((gatekeeper) => (
@@ -110,6 +111,7 @@ function App() {
           ))}
         </div>
       </Section>
+
       <Section id="test-tickets" title="Create Test Tickets">
         <p>
           <form
@@ -125,6 +127,52 @@ function App() {
           >
             <input type="tel" name="ticketId" placeholder="ticketId" required value="123" />
             <input type="tel" name="tazId" placeholder="tazId" value="205602378" />
+            <input type="text" name="participantName" placeholder="participantName" required value="daniel" />
+            <button type="submit">generate QR</button>
+            <img id="generate-test-ticket" />
+          </form>
+        </p>
+      </Section>
+
+      <Section id="update-tickets" title="Update Ticket">
+        <p>
+          <form
+            style={{ display: "flex", flexDirection: "column" }}
+            onSubmit={async (e) => {
+              // const form = e.currentTarget ?
+              console.log(e.currentTarget)
+              e.preventDefault();
+              const imgEle = document.querySelector<HTMLImageElement>('img#generate-test-ticket')!;
+              const qrcode = await getQRCode(user);
+              imgEle.src = encodeSVGAsDataURI(qrcode)
+            }}
+          >
+            <input type="tel" name="ticketId" placeholder="ticketId" required value="123" />
+            <input type="tel" name="tazId" placeholder="tazId" value="205602378" />
+            <input type="text" name="participantName" placeholder="participantName" required value="daniel" />
+            <button type="submit">generate QR</button>
+            <img id="generate-test-ticket" />
+          </form>
+        </p>
+      </Section>
+
+      <Section id="audit-log" title="Audit Log">
+        <p>
+          <form
+            style={{ display: "flex", flexDirection: "column" }}
+            onSubmit={async (e) => {
+              // const form = e.currentTarget ?
+              console.log(e.currentTarget)
+              e.preventDefault();
+              const imgEle = document.querySelector<HTMLImageElement>('img#generate-test-ticket')!;
+              const qrcode = await getQRCode(user);
+              imgEle.src = encodeSVGAsDataURI(qrcode)
+            }}
+          >
+            <input type="tel" name="ticketId" placeholder="ticketId" required value="123" />
+            <button onClick={async () => {
+
+            }}>generate QR</button>
             <input type="text" name="participantName" placeholder="participantName" required value="daniel" />
             <button type="submit">generate QR</button>
             <img id="generate-test-ticket" />
