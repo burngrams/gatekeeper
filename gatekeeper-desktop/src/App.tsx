@@ -15,6 +15,12 @@ function encodeSVGAsDataURI(svg: string) {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`
 }
 
+interface Ticket {
+  ticketId: string;
+  tazId: string;
+  participantName: string;
+}
+
 // TODO extract
 function Section(props: { title: string, children: React.ReactNode, id: string }) {
   return (
@@ -32,19 +38,27 @@ function Section(props: { title: string, children: React.ReactNode, id: string }
 function App() {
   const [user, setName] = useState("");
   const [qrCode, setQRCode] = useState<string | null>(null);
-  const [gatekeepers, setGatekeepers] = useState<Gatekeeper[]>([]);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [gatekeepers, setGatekeepers] = useState<any[]>([]);
+  const [filepath, setFilepath] = useState<File | null>(null);
 
   return (
     <div className="container">
       <h1>Welcome to Gatekeeper!</h1>
-      <h2></h2>
+      <p>
+        {"-> click on sections below to expand <-"}
+      </p>
       <Section title="Manage Data" id="manage-data">
-        TBD - manage data
-        <ul>
-          <li>drag and drop JSON feature to here</li>
-          <li>show some statistics on list of attendees</li>
-          <li>add text attendees can be viewed in JSON / CSV at :path_to_json</li>
-        </ul>
+        <input type="file" name="input-file" onChange={async (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          setFilepath(file)
+          const text = await file.text();
+          const tickets = JSON.parse(text);
+          setTickets(tickets);
+        }} />
+        <label htmlFor='input-file'>Upload tickets JSON</label>
+        {!tickets.length ? null : <p>{`tickets loaded: ${tickets.length}.`}</p>}
       </Section>
 
       <Section title="Create Login" id="create-credentials">
