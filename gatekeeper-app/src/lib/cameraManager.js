@@ -1,4 +1,5 @@
 import { credentialsManager } from './credentialsManager';
+import { ticketManager } from './ticketManager';
 
 class CameraManager {
 	data = null;
@@ -8,6 +9,7 @@ class CameraManager {
 		this.data = data;
 
 		credentialsManager.setCredentials(data);
+		ticketManager.setTicket(data);
 	}
 }
 

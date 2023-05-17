@@ -18,9 +18,9 @@ export default function ScanCredentialsPage() {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
+    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
     setScanned(true);
 		cameraManager.setData(data);
-    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
   if (hasPermission === null) {

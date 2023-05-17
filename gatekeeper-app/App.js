@@ -5,6 +5,7 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import ScanCredentialsPage from './src/components/ScanCredentialsPage';
 import { PagesManager, pagesManager } from './src/lib/pagesManager';
 import { GatekeeperPage } from './src/components/GatekeeperPage';
+import Toast from 'react-native-toast-message';
 
 // TODO stylize
 function Intro() {
@@ -23,6 +24,7 @@ const App = observer(function App() {
     <View style={styles.container}>
       {pagesManager.page === PagesManager.pages.intro && <Intro />}
       {pagesManager.page === PagesManager.pages.gatekeeper && <GatekeeperPage />}
+      <Toast />
     </View>
   );
 })
