@@ -18,6 +18,7 @@ summary {
   display: flex;
   cursor: pointer;
   align-items: center;
+  align-content: center;
 }
 
 summary::-webkit-details-marker {
