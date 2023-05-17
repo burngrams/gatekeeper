@@ -19,15 +19,26 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access camera.",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+      },
+      "bundleIdentifier": "com.daanchuk.gatekeeper"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA"
+      ],
+      "package": "com.daanchuk.gatekeeper"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,6 +48,12 @@
         "projectId": "5d9f4d23-3097-48c9-add9-d2979e2f6dbf"
       }
     },
-    "owner": "xwildeyes"
+    "owner": "xwildeyes",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/5d9f4d23-3097-48c9-add9-d2979e2f6dbf"
+    }
   }
 }
