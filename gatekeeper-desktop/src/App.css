@@ -1,7 +1,25 @@
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
+details {
+  user-select: none;
+  margin: 0 auto;
 }
 
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafb);
+details > summary span.icon {
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s;
+  margin-left: auto;
+}
+
+details[open] summary span.icon {
+  transform: rotate(180deg);
+}
+
+summary {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+}
+
+summary::-webkit-details-marker {
+  display: none;
 }
