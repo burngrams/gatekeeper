@@ -4,48 +4,47 @@ import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
 
-  async function greet() {
+  async function login() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
+    setQRCode(await invoke("login", { name }));
   }
 
   return (
     <div className="container">
-      <h1>Welcome to Tauri!</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1>Welcome to Gatekeeper!</h1>
+      <h2></h2>
+      <h2>Manage Data</h2>
+      <div>
+        TBD - manage data
+        <ul>
+          <li>drag and drop JSON feature to here</li>
+          <li>show some statistics on list of attendees</li>
+          <li>add text attendees can be viewed in JSON / CSV at :path_to_json</li>
+        </ul>
       </div>
 
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
+      <h2>Credential Generator</h2>
       <div className="row">
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            greet();
+            login();
           }}
         >
           <input
-            id="greet-input"
+            id="login-input"
             onChange={(e) => setName(e.currentTarget.value)}
             placeholder="Enter a name..."
           />
-          <button type="submit">Greet</button>
+          <button type="submit">login</button>
         </form>
       </div>
-      <p>{greetMsg}</p>
+
+      <h2>Gatekeepers List</h2>
+      <div className="row">
+      </div>
     </div>
   );
 }
