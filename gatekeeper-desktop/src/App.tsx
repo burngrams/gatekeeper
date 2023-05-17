@@ -3,17 +3,20 @@ import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
+async function getQRCode(user: string) {
+  const result = await invoke<string>("generateQRCode", { user });
+  // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+  // const qrCode = JSON.parse(result)
+  const decoded = atob(result);
+  return (decoded.replace('<?xml version="1.0" standalone="yes"?>', ''));
+}
+
+function encodeSVGAsDataURI(svg: string) {
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`
+}
 function App() {
   const [user, setName] = useState("");
   const [qrCode, setQRCode] = useState<string | null>(null);
-
-  async function login() {
-    const result = await invoke<string>("generateQRCode", { user });
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    // const qrCode = JSON.parse(result)
-    const decoded = atob(result);
-    setQRCode(decoded.replace('<?xml version="1.0" standalone="yes"?>', ''));
-  }
 
   return (
     <div className="container">
@@ -30,20 +33,36 @@ function App() {
       </div>
       <details>
         <summary>
-          <span class="icon">👇</span>
+          <span className="icon">👇</span>
           <h2>Create Test Tickets</h2>
         </summary>
         <p>
-          42
+          <form
+            style={{ display: "flex", flexDirection: "column" }}
+            onSubmit={async (e) => {
+              // const form = e.currentTarget ?
+              console.log(e.currentTarget)
+              e.preventDefault();
+              const imgEle = document.querySelector<HTMLImageElement>('img#generate-test-ticket')!;
+              const qrcode = await getQRCode(user);
+              imgEle.src = encodeSVGAsDataURI(qrcode)
+            }}
+          >
+            <input type="tel" name="ticketId" placeholder="ticketId" required value="123" />
+            <input type="tel" name="tazId" placeholder="tazId" value="205602378" />
+            <input type="text" name="participantName" placeholder="participantName" required value="daniel" />
+            <button type="submit">generate QR</button>
+            <img id="generate-test-ticket" />
+          </form>
         </p>
       </details>
       <h2>Credential Generator</h2>
       <div className="row">
         <div className="row">
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              login();
+              setQRCode(await getQRCode(user));
             }}
           >
             <input
@@ -55,7 +74,7 @@ function App() {
           </form>
         </div>
         <div className="row">
-          {qrCode && <img src={`data:image/svg+xml;utf8,${encodeURIComponent(qrCode)}`} alt="QR Code" />}
+          {qrCode && <img src={encodeSVGAsDataURI(qrCode)} alt="QR Code" />}
         </div>
       </div>
 
