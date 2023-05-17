@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { PagesManager, pagesManager } from './pagesManager';
+import Toast from 'react-native-toast-message';
 
 export class TicketMangaer {
 	currentTicket = null;
@@ -14,6 +15,12 @@ export class TicketMangaer {
 			this.currentTicket = ticketData;
 
 			ticketData.isStatusInside = !ticketData.isStatusInside;
+
+			Toast.show({
+				'type': 'success',
+				'text1': 'Ticket updated',
+				'text2': `Ticket ${ticketData.ticketId} is now ${ticketData.isStatusInside ? 'inside' : 'outside'}`
+			})
 		}
 	}
 }
