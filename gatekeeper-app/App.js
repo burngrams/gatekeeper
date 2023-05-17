@@ -6,6 +6,7 @@ import ScanCredentialsPage from './src/components/ScanCredentialsPage';
 import { PagesManager, pagesManager } from './src/lib/pagesManager';
 import { GatekeeperPage } from './src/components/GatekeeperPage';
 import Toast from 'react-native-toast-message';
+import Bonjour from 'bonjour-service'
 
 // TODO stylize
 function Intro() {

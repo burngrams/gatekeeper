@@ -8,6 +8,10 @@ fn greet(name: &str) -> String {
 }
 
 fn main() {
+    let my_local_ip = local_ip_address::local_ip().unwrap();
+
+    println!("This is my local IP address: {:?}", my_local_ip);
+
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
