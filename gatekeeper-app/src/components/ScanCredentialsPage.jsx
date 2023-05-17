@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { cameraManager } from '../lib/cameraManager';
 
 export default function ScanCredentialsPage() {
 	console.log('ScanCredentialsPage');
@@ -18,7 +19,8 @@ export default function ScanCredentialsPage() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+		cameraManager.setData(data);
+    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
   if (hasPermission === null) {
