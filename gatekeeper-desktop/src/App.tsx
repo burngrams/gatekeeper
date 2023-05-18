@@ -1,13 +1,9 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
-async function getQRCode(user: string) {
-  const result = await invoke<string>("generateQRCode", { user });
-  // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-  // const qrCode = JSON.parse(result)
-  const decoded = atob(result);
+function strToQRstr(invokeResult: string) {
+  const decoded = atob(invokeResult);
   return (decoded.replace('<?xml version="1.0" standalone="yes"?>', ''));
 }
 
@@ -35,19 +31,30 @@ function Section(props: { title: string, children: React.ReactNode, id: string }
     </details>
   )
 }
+
 function App() {
   const [user, setName] = useState("");
-  const [qrCode, setQRCode] = useState<string | null>(null);
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [gatekeepers, setGatekeepers] = useState<any[]>([]);
   const [filepath, setFilepath] = useState<File | null>(null);
 
+  const createQRHandler = (id: string): React.FormEventHandler<HTMLFormElement> => async (e) => {
+    e.preventDefault();
+
+    // get all fields from form in event
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    const result = await invoke<string>(id, data);
+    debugger
+    const qrcode = strToQRstr(result);
+    const imgEle = document.querySelector<HTMLImageElement>(`#${id} img`)!;
+    imgEle.src = encodeSVGAsDataURI(qrcode);
+  };
   return (
     <div className="container">
       <h1>Welcome to Gatekeeper!</h1>
-      <p>
-        {"-> click on sections below to expand <-"}
-      </p>
+
       <Section title="Manage Data" id="manage-data">
         <input type="file" name="input-file" onChange={async (e) => {
           const file = e.target.files?.[0];
@@ -61,22 +68,20 @@ function App() {
         {!tickets.length ? null : <p>{`tickets loaded: ${tickets.length}.`}</p>}
       </Section>
 
-      <Section title="Create Login" id="create-credentials">
+      <Section title="Create new gatekeeper" id="create_gatekeeper">
         <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            setQRCode(await getQRCode(user));
-          }}
+          onSubmit={createQRHandler('create_gatekeeper')}
         >
           <input
             id="login-input"
+            name="fullname"
             onChange={(e) => setName(e.currentTarget.value)}
             placeholder="Enter a user..."
           />
           <button type="submit">generate QR</button>
         </form>
 
-        {qrCode && <img src={encodeSVGAsDataURI(qrCode)} alt="QR Code" />}
+        {<img alt="QR Code" />}
       </Section>
 
       <Section title="Gatekeepers List" id="gatekeepers-list">
@@ -112,7 +117,7 @@ function App() {
         </div>
       </Section>
 
-      <Section id="test-tickets" title="Create Test Tickets">
+      <Section id="test-tickets" title="Create Test Ticket">
         <p>
           <form
             style={{ display: "flex", flexDirection: "column" }}
@@ -121,7 +126,7 @@ function App() {
               console.log(e.currentTarget)
               e.preventDefault();
               const imgEle = document.querySelector<HTMLImageElement>('img#generate-test-ticket')!;
-              const qrcode = await getQRCode(user);
+              const qrcode = await strToQRstr(user);
               imgEle.src = encodeSVGAsDataURI(qrcode)
             }}
           >
@@ -143,7 +148,7 @@ function App() {
               console.log(e.currentTarget)
               e.preventDefault();
               const imgEle = document.querySelector<HTMLImageElement>('img#generate-test-ticket')!;
-              const qrcode = await getQRCode(user);
+              const qrcode = await strToQRstr(user);
               imgEle.src = encodeSVGAsDataURI(qrcode)
             }}
           >
@@ -165,7 +170,7 @@ function App() {
               console.log(e.currentTarget)
               e.preventDefault();
               const imgEle = document.querySelector<HTMLImageElement>('img#generate-test-ticket')!;
-              const qrcode = await getQRCode(user);
+              const qrcode = await strToQRstr(user);
               imgEle.src = encodeSVGAsDataURI(qrcode)
             }}
           >
