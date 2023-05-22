@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 type User = { id: string; name: string }
 
 // Imaginary database

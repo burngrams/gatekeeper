@@ -18,10 +18,15 @@ export const appRouter = router({
     return user
   }),
   userCreate: publicProcedure.input(z.object({ name: z.string() })).mutation(async (opts) => {
-    const { input } = opts
+    const {
+      input: { name },
+    } = opts
     //      ^?
+    if (!name) {
+      throw new Error('Name is required')
+    }
     // Create a new user in the database
-    const user = await db.user.create(input)
+    const user = await db.user.create({ name })
     //    ^?
     return user
   }),
