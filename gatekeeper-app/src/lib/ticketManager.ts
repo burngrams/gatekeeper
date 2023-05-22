@@ -1,8 +1,8 @@
 import { makeAutoObservable } from 'mobx'
 import { PagesManager, pagesManager } from './pagesManager'
 import Toast from 'react-native-toast-message'
+import { trpc, trpcReact } from './trpcReact'
 import { TicketModel } from 'gatekeeper-desktop/lib/models'
-import { trpcManager } from './trpc'
 
 export class TicketMangaer {
   currentTicket: null | TicketModel = null
@@ -14,12 +14,11 @@ export class TicketMangaer {
   *setTicket(ticketData) {
     console.log('setTicket', ticketData)
     if (ticketData.ticketId && pagesManager.page === PagesManager.pages.gatekeeper) {
-      console.warn('trpcManager.trpc', trpcManager.trpc)
-      const { ticket } = yield trpcManager.trpc.tickets.get.query({ ticketId: ticketData.ticketId })
+      const { ticket } = yield trpc.tickets.get.query({ ticketId: ticketData.ticketId })
       this.currentTicket = ticket
       console.log('ticket', ticket)
 
-      const { ticket: newTicket } = yield trpcManager.trpc.tickets.updateStatus.mutate({
+      const { ticket: newTicket } = yield trpc.tickets.updateStatus.mutate({
         isInside: !ticket.isInside,
         ticketId: ticket.ticketId,
       })

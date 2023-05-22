@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import React from 'react';
-import { formIdToQRImage, getFormData, setImg } from './backend.layer';
+import { formIdToQRImage } from './backend.layer';
 import { strToQRstr, encodeSVGAsDataURI } from './presentation.layer';
+
 import "./CommandPage.css";
 import { Section } from './Section';
 import { trpcReact } from '.';
@@ -14,32 +15,19 @@ interface Ticket {
 
 export function CommandPage() {
 	useEffect(() =>
-		[
-			onSubmitTicketTestForm,
-			onSubmitGatekeeperForm
-		].forEach(fn => fn())
+		['create-gatekeeper'].forEach(formIdToQRImage)
 		, [])
 
-	const onSubmitTicketTestForm = async (e?: React.FormEvent<HTMLFormElement>) => {
-		e?.preventDefault();
-		await formIdToQRImage('create-ticket');
+	const createQRHandler = (id: string) => async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+		e.preventDefault();
+		await formIdToQRImage(id);
 	};
-	const onSubmitGatekeeperForm = async (e?: React.FormEvent<HTMLFormElement>) => {
-		e?.preventDefault();
-		const id = 'create-gatekeeper'
-		const data = {
-			...getFormData(id),
-			ip: window['gatekeeper'].ip,
-		}
-		console.log('data', data)
-		await setImg(id, data)
-	}
 	return (
 		<div className="container">
 			<h1>Welcome to Gatekeeper!</h1>
 			<Section title="יצירת גייטרית" id="create-gatekeeper">
 				<form
-					onSubmit={onSubmitGatekeeperForm}
+					onSubmit={createQRHandler('create-gatekeeper')}
 				>
 					<input
 						id="login-input"
@@ -54,7 +42,7 @@ export function CommandPage() {
 			<Section id="create-ticket" title="צור ברקוד לכרטיס (לטובת הדרכה)">
 				<form
 					style={{ display: "flex", flexDirection: "column" }}
-					onSubmit={onSubmitTicketTestForm}
+					onSubmit={createQRHandler('create-ticket')}
 				>
 					<input type="tel" name="ticketId" placeholder="ticketId" required defaultValue="always-existing-test-id" />
 					<button type="submit">generate QR</button>
