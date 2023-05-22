@@ -1,5 +1,6 @@
 // from https://www.electron-trpc.dev project
 
+import { Text } from 'react-native';
 import { trpcReact } from '../lib/trpcReact';
 
 export function HelloElectron() {
@@ -14,5 +15,5 @@ export function HelloElectron() {
 		return null;
 	}
 
-	return <div>{data.text}</div>;
+	return <Text>{data.text}</Text>;
 }

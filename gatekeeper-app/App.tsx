@@ -41,7 +41,7 @@ export default function () {
     trpcReact.createClient({
       links: [
         httpBatchLink({
-          url: 'http:/10.0.0.15:3000',
+          url: 'http://10.0.0.15:3000',
         }),
       ],
       transformer: superjson,
