@@ -9,17 +9,21 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.29.7",
+    "@trpc/react-query": "^10.27.1",
+    "@types/react": "~18.0.27",
     "expo": "~48.0.15",
     "expo-barcode-scanner": "~12.3.2",
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.4",
+    "gatekeeper-desktop": "file:../gatekeeper-desktop",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-toast-message": "^2.1.6",
-    "typescript": "^4.9.4",
-    "@types/react": "~18.0.27"
+    "superjson": "^1.12.3",
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

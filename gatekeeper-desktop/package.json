@@ -1,9 +1,8 @@
 {
-  "name": "examples/basic-react-superjson",
-  "version": "0.0.12",
+  "name": "gatekeeper-desktop",
+  "version": "1",
   "private": true,
   "main": "dist-electron/index.js",
-  "license": "MIT",
   "scripts": {
     "start": "vite",
     "build": "vite build"

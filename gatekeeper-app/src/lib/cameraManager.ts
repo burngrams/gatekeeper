@@ -1,16 +1,16 @@
-import { credentialsManager } from './credentialsManager';
-import { ticketManager } from './ticketManager';
+import { credentialsManager } from './credentialsManager'
+import { ticketManager } from './ticketManager'
 
 class CameraManager {
-	data = null;
+  data = null
 
-	setData(rawData) {
-		const data = JSON.parse(rawData);
-		this.data = data;
+  setData(rawData) {
+    const data = JSON.parse(rawData)
+    this.data = data
 
-		credentialsManager.setCredentials(data);
-		ticketManager.setTicket(data);
-	}
+    credentialsManager.setCredentials(data)
+    ticketManager.setTicket(data)
+  }
 }
 
-export const cameraManager = new CameraManager();
+export const cameraManager = new CameraManager()
