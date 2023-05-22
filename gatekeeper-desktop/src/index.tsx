@@ -4,7 +4,7 @@ import { ipcLink } from 'electron-trpc/renderer';
 import superjson from 'superjson';
 import { createTRPCReact } from '@trpc/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import type { AppRouter } from '../electron/api';
+import type { AppRouter } from '../lib/api';
 
 const trpcReact = createTRPCReact<AppRouter>();
 
