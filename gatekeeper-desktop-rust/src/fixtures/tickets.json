@@ -15,6 +15,6 @@
     "tazId": "13",
     "participantName": "John",
     "ticketId": "3",
-    "isInside": false
+    "isInside": true
   }
 ]

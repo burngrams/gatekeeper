@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke, } from "@tauri-apps/api/tauri";
+import { event, } from "@tauri-apps/api";
+import { open, } from "@tauri-apps/api/dialog";
 import "./App.css";
+import { emit } from 'process';
 
 function strToQRstr(invokeResult: string) {
   const decoded = atob(invokeResult);
@@ -36,7 +39,7 @@ function App() {
   const [user, setName] = useState("");
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [gatekeepers, setGatekeepers] = useState<any[]>([]);
-  const [filepath, setFilepath] = useState<File | null>(null);
+  const [filepath, setFilepath] = useState<string | null>(null);
 
   const createQRHandler = (id: string): React.FormEventHandler<HTMLFormElement> => async (e) => {
     e.preventDefault();
@@ -57,14 +60,18 @@ function App() {
 
       <Section title="Manage Data" id="manage-data">
         <p>
-          <input type="file" name="input-file" onChange={async (e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            setFilepath(file)
-            const text = await file.text();
-            const tickets = JSON.parse(text);
-            setTickets(tickets);
-          }} />
+          <button onClick={async () => {
+            const filepath = await open({
+              multiple: false,
+              // filters: [{
+              //   name: ''
+              //   extensions: ['json']
+              // }]
+            }) as string;
+            setFilepath(filepath)
+            event.emit('load_file', { filepath })
+          }}>load file</button>
+          <span>{filepath && "filepath: " + filepath}</span>
         </p>
         {!tickets.length ? null : <p>{`tickets loaded: ${tickets.length}.`}</p>}
       </Section>
@@ -138,40 +145,6 @@ function App() {
             <img id="generate-test-ticket" />
           </form>
         </p>
-      </Section>
-
-      <Section title="Gatekeepers List" id="gatekeepers-list">
-
-        <div className="row">
-          {gatekeepers.map((gatekeeper) => (
-            <div className="col-4" key={gatekeeper.id}>
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">{gatekeeper.name}</h5>
-                  <p className="card-text">
-                    <strong>Phone:</strong> {gatekeeper.phone}
-                    <br />
-                    <strong>Address:</strong> {gatekeeper.address}
-                  </p>
-                  <div className="btn-group" role="group">
-                    <Link
-                      to={`/edit-gatekeeper/${gatekeeper.id}`}
-                      className="btn btn-outline-primary"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => deleteGatekeeper(gatekeeper.id)}
-                      className="btn btn-outline-danger"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       </Section>
 
       <Section id="audit-log" title="Audit Log">
