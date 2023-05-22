@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from 'react';
-import { createQRHandler } from './backend.layer';
+import { formIdToQRImage } from './backend.layer';
 import { strToQRstr, encodeSVGAsDataURI } from './presentation.layer';
 
 import "./CommandPage.css";
 import { Section } from './Section';
+import { trpcReact } from '.';
 
 interface Ticket {
 	ticketId: string;
@@ -18,17 +19,27 @@ export function CommandPage() {
 	const [gatekeepers, setGatekeepers] = useState<any[]>([]);
 	const [filepath, setFilepath] = useState<string | null>(null);
 
+	useEffect(() =>
+		['create-gatekeeper'].forEach(formIdToQRImage)
+		, [])
+
+	const createQRHandler = (id: string) => async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+		e.preventDefault();
+		await formIdToQRImage(id);
+	};
 	return (
 		<div className="container">
 			<h1>Welcome to Gatekeeper!</h1>
 
+			{/* 
+			// TODO make location of data configurable
 			<Section title="Manage Data" id="manage-data">
 				<div>
 					<input type="file" name="file" />
 					<label htmlFor="file">{filepath ? "filepath: " + filepath : 'Choose a file'}</label>
 				</div>
 				<div>{!tickets.length ? null : `tickets loaded: ${tickets.length}.`}</div>
-			</Section>
+			</Section> */}
 
 			<Section title="Tickets" id="tickets">
 				<table>
@@ -48,30 +59,29 @@ export function CommandPage() {
 					</tbody>
 				</table>
 			</Section>
-			<Section title="Create new gatekeeper" id="create_gatekeeper">
+			<Section title="יצירת גייטרית" id="create-gatekeeper">
 				<form
-					onSubmit={createQRHandler('create_gatekeeper')}
+					onSubmit={createQRHandler('create-gatekeeper')}
 				>
 					<input
 						id="login-input"
 						name="fullname"
 						onChange={(e) => setName(e.currentTarget.value)}
 						placeholder="Enter a user..."
+						defaultValue="daniel k"
 					/>
 					<button type="submit">generate QR</button>
 				</form>
 
-				{<img alt="QR Code" />}
+				<img alt="create-gatekeeper QR Code" />
 			</Section>
 
-			<Section id="create_ticket" title="Create Test Ticket">
+			<Section id="create-ticket" title="צור ברקוד לכרטיס (לטובת הדרכה)">
 				<form
 					style={{ display: "flex", flexDirection: "column" }}
-					onSubmit={createQRHandler('create_ticket')}
+					onSubmit={createQRHandler('create-ticket')}
 				>
-					<input type="tel" name="ticketId" placeholder="ticketId" required defaultValue="123" />
-					<input type="tel" name="tazId" placeholder="tazId" defaultValue="205602378" />
-					<input type="text" name="participantName" placeholder="participantName" required defaultValue="daniel" />
+					<input type="tel" name="ticketId" placeholder="ticketId" required defaultValue="always-existing-test-id" />
 					<button type="submit">generate QR</button>
 					<img />
 				</form>

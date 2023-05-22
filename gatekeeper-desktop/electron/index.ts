@@ -1,8 +1,8 @@
 import path from 'path'
 import { app, BrowserWindow } from 'electron'
 import { createIPCHandler } from 'electron-trpc/main'
-import { router } from '../lib/api'
 import { createServer } from './server'
+import { appRouter } from '../lib'
 
 process.env.DIST = path.join(__dirname, '../dist')
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public')
@@ -19,12 +19,12 @@ app.on('ready', () => {
     },
   })
 
-  createIPCHandler({ router, windows: [win] })
+  createIPCHandler({ router: appRouter, windows: [win] })
 
   if (url) {
     win.loadURL(url)
   } else {
-    win.loadFile(path.join(process.env.DIST, 'index.html'))
+    win.loadFile(path.join(process.env.DIST!, 'index.html'))
   }
 
   win.show()

@@ -1,7 +1,7 @@
 import type { inferAsyncReturnType } from '@trpc/server'
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next'
 import { DatabaseModel } from '../models'
-import { DatabaseLayer } from '../repository/types'
+import { DatabaseLayer } from '../repository/data.types'
 // import { getSessionFromCookie, type Session } from './auth'
 
 /**

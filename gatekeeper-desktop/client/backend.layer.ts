@@ -1,18 +1,19 @@
+import { trpcReact } from '.'
 import { strToQRstr, encodeSVGAsDataURI } from './presentation.layer'
+import QRCode from 'qrcode'
 
-export const createQRHandler =
-  (id: string): React.FormEventHandler<HTMLFormElement> =>
-  async (e) => {
-    e.preventDefault()
+export const formIdToQRImage = async (id: string) => {
+  const formEle = document.querySelector<HTMLFormElement>(`#${id} form`)!
+  const qrcode = await formToQR(formEle)
+  const imgEle = document.querySelector<HTMLImageElement>(`#${id} img`)!
+  imgEle.src = qrcode
+}
 
-    // get all fields from form in event
-    const form = e.currentTarget
-    const formData = new FormData(form)
-    const data = Object.fromEntries(formData.entries())
-    throw 'TBD'
-    const result = await invoke<string>(id, data)
-    debugger
-    const qrcode = strToQRstr(result)
-    const imgEle = document.querySelector<HTMLImageElement>(`#${id} img`)!
-    imgEle.src = encodeSVGAsDataURI(qrcode)
-  }
+export const formToQR = async (formEle: HTMLFormElement) => {
+  const formData = new FormData(formEle)
+  const data = Object.fromEntries(formData.entries())
+  const json = JSON.stringify(data)
+  const qrcode = await QRCode.toDataURL(json)
+
+  return qrcode
+}

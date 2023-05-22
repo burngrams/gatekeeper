@@ -1,7 +1,7 @@
 import { helloWorldRouter } from './hello-world'
-import { ticketsRouter } from './tickets'
+import { tickets } from './tickets.router'
 import { t } from '../trpc/t'
 
-export const appRouter = t.mergeRouters(helloWorldRouter, ticketsRouter)
+export const appRouter = t.router({ tickets })
 
 export type AppRouter = typeof appRouter

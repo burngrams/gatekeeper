@@ -41,7 +41,7 @@ export default function () {
     trpcReact.createClient({
       links: [
         httpBatchLink({
-          url: 'http://10.0.0.15:3000',
+          url: 'http://10.101.93.176:3000',
         }),
       ],
       transformer: superjson,
@@ -51,7 +51,7 @@ export default function () {
   return (
     <trpcReact.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <HelloElectron />
+        <App />
       </QueryClientProvider>
     </trpcReact.Provider>
   );

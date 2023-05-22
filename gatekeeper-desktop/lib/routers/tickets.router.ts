@@ -1,7 +1,23 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 
-const tickets = router({
+export const tickets = router({
+  get: publicProcedure.input(z.object({ ticketId: z.string() })).query((opts) => {
+    const {
+      input: { ticketId },
+    } = opts
+
+    const ticket = opts.ctx.lowdb.data.tickets.find((ticket) => ticket.ticketId === ticketId)
+
+    if (!ticket) {
+      throw new Error('Ticket not found')
+    }
+
+    return {
+      ticket,
+    }
+  }),
+
   updateStatus: publicProcedure
     .input(
       z.object({
@@ -9,7 +25,7 @@ const tickets = router({
         isInside: z.boolean(),
       })
     )
-    .mutation((opts) => {
+    .mutation(async (opts) => {
       const {
         input: { isInside, ticketId },
       } = opts
@@ -22,12 +38,10 @@ const tickets = router({
 
       ticket.isInside = isInside
 
-      opts.ctx.lowdb.write()
+      await opts.ctx.lowdb.write()
 
       return {
         ticket,
       }
     }),
 })
-
-export const ticketsRouter = tickets
