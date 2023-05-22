@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
-    <title>Hello from Electron renderer!</title>
+    <!-- TODO this needs to be activated for production versions -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" /> -->
+    <title>אריות הגייט הגירסא הדיגיטלית</title>
+    <link rel="stylesheet" href="./client/reset.css" />
   </head>
   <body>
     <div id="react-root"></div>
   </body>
-  <script type="module" src="./src/index.tsx"></script>
+  <script type="module" src="./client/index.tsx"></script>
 </html>

@@ -1,12 +1,14 @@
+import { createRoot as reactCreateRoot } from 'react-dom/client';
 import React, { useState } from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import { ipcLink } from 'electron-trpc/renderer';
 import superjson from 'superjson';
 import { createTRPCReact } from '@trpc/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppRouter } from '../lib/api';
+import { CommandPage } from './CommandPage';
 
-const trpcReact = createTRPCReact<AppRouter>();
+export const trpcReact = createTRPCReact<AppRouter>();
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -20,25 +22,14 @@ function App() {
   return (
     <trpcReact.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <HelloElectron />
+        <CommandPage />
       </QueryClientProvider>
     </trpcReact.Provider>
   );
 }
 
-function HelloElectron() {
-  const { data } = trpcReact.greeting.useQuery({ name: 'Electron' });
-  trpcReact.subscription.useSubscription(undefined, {
-    onData: (data) => {
-      console.log(data);
-    },
-  });
-
-  if (!data) {
-    return null;
-  }
-
-  return <div>{data.text}</div>;
-}
-
-ReactDom.render(<App />, document.getElementById('react-root'));
+reactCreateRoot(document.getElementById("react-root") as HTMLElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
