@@ -17,7 +17,9 @@
     "mobx-react-lite": "^3.4.3",
     "react": "18.2.0",
     "react-native": "0.71.8",
-    "react-native-toast-message": "^2.1.6"
+    "react-native-toast-message": "^2.1.6",
+    "typescript": "^4.9.4",
+    "@types/react": "~18.0.27"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
