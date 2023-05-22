@@ -3,6 +3,7 @@ import { PagesManager, pagesManager } from './pagesManager'
 
 interface CredentialsModel {
   fullname: string
+  ip: string
 }
 
 class CredentialsManager {
@@ -10,6 +11,10 @@ class CredentialsManager {
 
   constructor() {
     makeAutoObservable(this)
+  }
+
+  get getIP() {
+    return this.credentials?.ip
   }
 
   setCredentials(data: CredentialsModel | null) {
