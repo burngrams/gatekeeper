@@ -30,6 +30,8 @@ export const tickets = router({
         input: { isInside, ticketId },
       } = opts
 
+      console.log('mutating ticket', ticketId, 'to', isInside)
+
       const ticket = opts.ctx.lowdb.data.tickets.find((ticket) => ticket.ticketId === ticketId)
 
       if (!ticket) {
