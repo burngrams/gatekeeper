@@ -1,14 +1,11 @@
-import z from 'zod'
-import { initTRPC } from '@trpc/server'
 import { observable } from '@trpc/server/observable'
+import { z } from 'zod'
+import { t } from '../trpc/t'
 import { EventEmitter } from 'events'
-import superjson from 'superjson'
 
 const ee = new EventEmitter()
 
-const t = initTRPC.create({ isServer: true, transformer: superjson })
-
-export const router = t.router({
+export const helloWorldRouter = t.router({
   greeting: t.procedure.input(z.object({ name: z.string() })).query((req) => {
     const { input } = req
 
@@ -31,5 +28,3 @@ export const router = t.router({
     })
   }),
 })
-
-export type AppRouter = typeof router
