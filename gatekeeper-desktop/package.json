@@ -1,20 +1,36 @@
 {
-  "name": "gatekeeper-desktop",
+  "name": "electron-quick-start-typescript",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.ts",
-  "type": "module",
+  "description": "A minimal Electron application written with Typescript",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "eslint -c .eslintrc --ext .ts ./src",
+    "start": "npm run build && electron ./dist/main.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": "https://github.com/electron/electron-quick-start-typescript",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo",
+    "typescript"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "electron": "^24.3.0",
+    "eslint": "^7.32.0",
+    "typescript": "^4.8.3"
+  },
   "dependencies": {
-    "electron": "^24.3.1",
+    "@trpc/client": "^10.27.1",
+    "@trpc/server": "^10.27.1",
     "electron-trpc": "^0.5.0",
-    "typescript": "^5.0.4",
+    "superjson": "^1.12.3",
     "zod": "^3.21.4"
   }
 }
