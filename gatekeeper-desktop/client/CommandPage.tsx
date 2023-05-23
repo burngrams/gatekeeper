@@ -16,7 +16,7 @@ import { trpcReact } from './trpc';
  */
 function auditlogtotable(auditlog: AuditlogModel) {
 	const item = auditlog.length ? auditlog[0] : {}
-	const ths = Object.keys(auditlog).map(key => <th>{key}</th>)
+	const ths = Object.keys(item).map(key => <th>{key}</th>)
 	const trs = auditlog.map(operationLog => {
 		const tds = Object.values(operationLog).map(value => {
 			if (typeof value === 'object') {
