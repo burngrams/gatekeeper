@@ -53,6 +53,7 @@ export const GatekeeperPage = observer(() => {
 	const removeCurrentTicket = () => {
 		// TODO didnt work
 		queryClient.removeQueries(['tickets.get', { ticketId: viewModel.scannedTicketId }])
+		cameraStore.data = null
 	}
 
 	const updateStatus = trpcReact.tickets.updateStatus.useMutation()
@@ -78,7 +79,7 @@ export const GatekeeperPage = observer(() => {
 
 	return <View style={styles.container}>
 		<View style={styles.cameraView}>
-			<BarcodeCameraScanner />
+			{!cameraStore.data && <BarcodeCameraScanner />}
 		</View>
 		<View style={styles.skeletonLoader}>
 			<Text style={{ fontSize: 24 }}>ת.ז: {getTicket.data?.ticket.participantId}</Text>
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'center',
-		padding: 10,
+		padding: 50,
 		backgroundColor: '#ddd',
 	}
 });
