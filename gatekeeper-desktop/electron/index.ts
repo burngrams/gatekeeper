@@ -1,5 +1,5 @@
 import path from 'path'
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { createIPCHandler } from 'electron-trpc/main'
 import { createServer } from './server'
 import { appRouter } from '../lib'
@@ -20,6 +20,8 @@ app.on('ready', () => {
   })
 
   createIPCHandler({ router: appRouter, windows: [win] })
+  ipcMain.handle('getIp', () => require('ip').address())
+  console.log(`Running from ${require('ip').address()}...`)
 
   if (url) {
     win.loadURL(url)

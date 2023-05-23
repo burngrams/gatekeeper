@@ -31,12 +31,11 @@ export class PagesManager {
 
   static pages = {
     intro: 'intro',
-    camera: 'camera',
     gatekeeper: 'gatekeeper',
   }
 }
 
-const mockPagesStack = [PagesManager.pages.gatekeeper]
+const mockPagesStack = ['intro']
 const defaultPagesStack = ['intro']
 
 export const pagesManager = new PagesManager()

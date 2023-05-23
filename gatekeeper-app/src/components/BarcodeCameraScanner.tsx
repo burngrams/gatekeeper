@@ -22,7 +22,7 @@ export class CameraStore {
 
 export const cameraStore = new CameraStore
 
-export function BarcodeCameraScanner() {
+export function BarcodeCameraScanner({ onSuccess }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -38,6 +38,7 @@ export function BarcodeCameraScanner() {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     cameraStore.data = JSON.parse(data);
+    onSuccess?.(cameraStore.data)
     console.log(`Bar code with type ${type} and data ${data} has been scanned!`, cameraStore.data.ticketId);
   };
 

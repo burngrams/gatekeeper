@@ -11,5 +11,4 @@ export default function () {
     <Main />
     <Toast topOffset={80} position='top' />
   </View>
-
 };

@@ -10,12 +10,6 @@ import { DefaultLayout } from './DefaultLayout';
 
 
 export const Main = observer(function App() {
-
-	if (pagesManager.page === PagesManager.pages.camera) {
-		return <DefaultLayout>
-			<BarcodeCameraScanner />
-		</DefaultLayout>;
-	}
 	if (pagesManager.page === PagesManager.pages.intro) {
 		return <DefaultLayout>
 			<Intro />

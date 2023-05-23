@@ -8,10 +8,12 @@ import { credentialsManager } from '../lib/credentialsManager';
 
 export const TrpcProvider = ({ children }) => {
 	const [queryClient] = useState(() => new QueryClient());
+	const url = `http://${credentialsManager.serverIP}:3000`;
+	console.log('Instantiating trpcClient with url', url)
 	const [trpcClient] = useState(() => trpcReact.createClient({
 		links: [
 			httpBatchLink({
-				url: `http://${credentialsManager.credentials?.ip}:3000`,
+				url,
 			}),
 		],
 		transformer: superjson,
