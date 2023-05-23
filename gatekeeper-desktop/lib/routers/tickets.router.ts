@@ -37,6 +37,7 @@ export const tickets = router({
       }
 
       ticket.isInside = isInside
+      ticket.hasBeenScanned = true
 
       await opts.ctx.lowdb.write()
 

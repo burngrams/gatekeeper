@@ -9,6 +9,7 @@ export const defaultData: DatabaseModel = {
       ticketId: 'always-existing-test-id',
       participantId: '123456789',
       isInside: false,
+      hasBeenScanned: false,
     },
   ],
   gatekeepers: [],

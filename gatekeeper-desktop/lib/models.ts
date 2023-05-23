@@ -2,6 +2,7 @@ export interface TicketModel {
   ticketId: string
   participantId: string
   isInside: boolean
+  hasBeenScanned: boolean
 }
 
 export interface GatekeeperModel {
