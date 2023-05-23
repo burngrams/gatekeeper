@@ -16,6 +16,8 @@ app.on('ready', () => {
   const win = new BrowserWindow({
     webPreferences: {
       preload,
+
+      webSecurity: process.env.NODE_ENV === 'production',
     },
   })
 

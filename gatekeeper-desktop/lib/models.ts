@@ -22,9 +22,20 @@ export interface ParticipantModel {
   fullname: string
 }
 
+export interface OperationLogModel {
+  operationId: string
+  gatekeeperId: string
+  // the actual data of what has been modified
+  jsondiff: string
+  timestamp: Date
+}
+
+export type AuditlogModel = OperationLogModel[]
+
 export interface DatabaseModel {
   tickets: TicketModel[]
   gatekeepers: GatekeeperModel[]
   shifts: ShiftModel[]
   participants: ParticipantModel[]
+  auditlog: AuditlogModel
 }

@@ -15,4 +15,5 @@ export const defaultData: DatabaseModel = {
   gatekeepers: [],
   shifts: [],
   participants: [],
+  auditlog: [],
 }
