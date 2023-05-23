@@ -11,6 +11,7 @@ import ScanCredentialsPage from './src/components/ScanCredentialsPage';
 import { PagesManager, pagesManager } from './src/lib/pagesManager';
 import { trpcReact } from './src/lib/trpcReact';
 import { HelloElectron } from './src/components/HelloElectron';
+import { credentialsManager } from './src/lib/credentialsManager';
 
 
 // TODO stylize
@@ -41,7 +42,7 @@ export default function () {
     trpcReact.createClient({
       links: [
         httpBatchLink({
-          url: 'http://10.101.93.176:3000',
+          url: `http://${credentialsManager.credentials?.ip}:3000`,
         }),
       ],
       transformer: superjson,
