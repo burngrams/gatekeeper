@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native'
 import { credentialsManager } from '../lib/credentialsManager'
-import ScanCredentialsPage from './ScanCredentialsPage'
+import BarcodeCameraScanner from './BarcodeCameraScanner'
 import { ticketManager } from '../lib/ticketManager'
 import { observer } from 'mobx-react-lite'
 import { trpcReact } from '../lib/trpcReact'
@@ -37,7 +37,7 @@ export const GatekeeperPage = observer(() => {
 		<Text>ticketing: ID[{ticketManager.currentTicket?.ticketId}]</Text>
 		<Text>ticket status: {ticketManager.currentTicket?.isInside ? 'INside' : 'OUTside'}</Text>
 		<View style={{ display: 'flex', height: '30%' }}>
-			<ScanCredentialsPage />
+			<BarcodeCameraScanner />
 		</View>
 	</View>
 })

@@ -4,7 +4,7 @@ import React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { GatekeeperPage } from './src/components/GatekeeperPage';
-import ScanCredentialsPage from './src/components/ScanCredentialsPage';
+import BarcodeCameraScanner from './src/components/BarcodeCameraScanner';
 import { PagesManager, pagesManager } from './src/lib/pagesManager';
 import { HelloElectron } from './src/components/HelloElectron';
 import { TrpcProvider } from './src/components/trpcProvider';
@@ -21,7 +21,7 @@ function Intro() {
 }
 
 export const App = observer(function App() {
-  if (pagesManager.page === PagesManager.pages.camera) return <ScanCredentialsPage />
+  if (pagesManager.page === PagesManager.pages.camera) return <BarcodeCameraScanner />
 
   return (
     <View style={styles.container}>
