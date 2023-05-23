@@ -7,8 +7,8 @@ import Toast from 'react-native-toast-message';
 import { trpcReact } from '../lib/trpcReact';
 import { BarcodeCameraScanner, cameraStore } from './BarcodeCameraScanner';
 import { TicketModel } from 'gatekeeper-desktop/lib/models';
-import { getQueryClient } from '@trpc/react-query/dist/shared';
 import { useQueryClient } from '@tanstack/react-query';
+import { getQueryKey } from '@trpc/react-query';
 
 class ViewModel {
 	constructor() {
@@ -28,19 +28,12 @@ class ViewModel {
 	onSuccess4getTicket(ticket: TicketModel) {
 		const text2 = `Particicpant ${ticket.participantId} is now ${ticket.isInside ? 'inside' : 'outside'}`;
 		console.log('Toast:', text2)
-		Toast.show({
-			type: 'success',
-			text1: `Ticket for ${ticket.participantId} updated`,
-			text2: text2,
-		})
 	}
 }
 
 export const viewModel = new ViewModel()
 
 export const GatekeeperPage = observer(() => {
-	const updateStatus = trpcReact.tickets.updateStatus.useMutation()
-
 	console.log('cameraStore.data', cameraStore.data)
 	console.log('viewModel.scannedTicketId', viewModel.scannedTicketId)
 	console.log('viewModel.shouldRefetchTicket', viewModel.shouldRefetchTicket)
@@ -51,7 +44,6 @@ export const GatekeeperPage = observer(() => {
 	}, {
 		enabled: false,
 	})
-
 	useEffect(() => {
 		if (viewModel.hasScannedTicket)
 			getTicket.refetch()
@@ -62,6 +54,28 @@ export const GatekeeperPage = observer(() => {
 		// TODO didnt work
 		queryClient.removeQueries(['tickets.get', { ticketId: viewModel.scannedTicketId }])
 	}
+
+	const updateStatus = trpcReact.tickets.updateStatus.useMutation()
+	const toggleTicketStatus = async () => {
+		const ticketId = getTicket.data.ticket.ticketId
+		const { ticket } = await updateStatus.mutateAsync({ ticketId, isInside: !getTicket.data.ticket.isInside }, {})
+		const queryKey = getQueryKey(trpcReact.tickets.get, { ticketId })
+
+		// rewrite getTicket to use the new data, but it doesnt work
+		console.log('queryDataBefore', queryKey, queryClient.getQueryData(queryKey))
+		queryClient.setQueryData(queryKey, ticket)
+		console.log('queryDataAfter', queryKey, queryClient.getQueryData(queryKey))
+		// show simple toast
+		Toast.show({
+			type: 'success',
+			text1: 'הצלחה',
+		})
+		// worked
+		getTicket.refetch()
+	}
+
+	const isInside = getTicket.data?.ticket.isInside ?? false
+
 	return <View style={styles.container}>
 		<View style={styles.cameraView}>
 			<BarcodeCameraScanner />
@@ -71,7 +85,7 @@ export const GatekeeperPage = observer(() => {
 		</View>
 		<View style={styles.buttonContainer}>
 			<Button color="grey" title="סקיפ" onPress={removeCurrentTicket} />
-			<Button color={"green"} title="הכנס" onPress={noop} />
+			<Button color={"green"} title={['הכנס', 'הוציא'][+isInside]} onPress={toggleTicketStatus} />
 		</View>
 	</View >
 })
