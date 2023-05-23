@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import superjson from 'superjson';
 import { trpcReact } from '../lib/trpcReact';
 import { credentialsManager } from '../lib/credentialsManager';
-import { App } from '../../App';
 
 
 export const TrpcProvider = ({ children }) => {
