@@ -7,7 +7,7 @@ import { GatekeeperPage } from './src/components/GatekeeperPage';
 import BarcodeCameraScanner from './src/components/BarcodeCameraScanner';
 import { PagesManager, pagesManager } from './src/lib/pagesManager';
 import { HelloElectron } from './src/components/HelloElectron';
-import { TrpcProvider } from './src/components/trpcProvider';
+import { TrpcProvider } from './src/components/TrpcProvider';
 
 
 // TODO stylize
@@ -20,7 +20,7 @@ function Intro() {
   );
 }
 
-export const App = observer(function App() {
+export default observer(function App() {
   if (pagesManager.page === PagesManager.pages.camera) return <BarcodeCameraScanner />
 
   return (
