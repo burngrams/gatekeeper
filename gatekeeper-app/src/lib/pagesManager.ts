@@ -1,41 +1,42 @@
 import { makeAutoObservable } from 'mobx'
 
 export class PagesManager {
-	pages = ['intro']
+  pages = mockPagesStack
 
-	get page() {
-		return this.pages[this.pages.length - 1]
-	}
+  get page() {
+    return this.pages[this.pages.length - 1]
+  }
 
-	constructor() {
-		makeAutoObservable(this)
+  constructor() {
+    makeAutoObservable(this)
+  }
 
-	}
+  push(page) {
+    this.pages.push(page)
+  }
 
-	push(page) {
-		this.pages.push(page)
-	}
+  replace(page) {
+    this.pages.pop()
+    this.push(page)
+  }
 
-	replace(page) {
-		this.pages.pop()
-		this.push(page)
-	}
+  isPreviousPage(page) {
+    if (this.pages.length < 2) return false
+    return this.pages[this.pages.length - 2] === page
+  }
 
-	isPreviousPage(page) {
-		if (this.pages.length < 2) return false
-		return this.pages[this.pages.length - 2] === page
-	}
+  pop() {
+    this.pages.pop()
+  }
 
-	pop() {
-		this.pages.pop()
-	}
-
-	static pages = {
-		intro: 'intro',
-		camera: 'camera',
-		login: 'login',
-		gatekeeper: 'gatekeeper',
-	}
+  static pages = {
+    intro: 'intro',
+    camera: 'camera',
+    gatekeeper: 'gatekeeper',
+  }
 }
 
-export const pagesManager = new PagesManager() 
+const mockPagesStack = [PagesManager.pages.gatekeeper]
+const defaultPagesStack = ['intro']
+
+export const pagesManager = new PagesManager()

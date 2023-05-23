@@ -6,14 +6,16 @@ interface CredentialsModel {
   ip: string
 }
 
+const mockCredentials = { fullname: 'Dan', ip: '10.0.0.15' }
 class CredentialsManager {
-  credentials: null | CredentialsModel = null
+  ssid: string | null = null
+  credentials: null | CredentialsModel = mockCredentials
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  setCredentials(data: CredentialsModel | null) {
+  setCredentials(data: CredentialsModel | null, ssid: string) {
     const hasNewCameraData = !!data
     const isComingFromIntroPage = pagesManager.isPreviousPage(PagesManager.pages.intro)
 
@@ -25,7 +27,16 @@ class CredentialsManager {
       pagesManager.replace(PagesManager.pages.gatekeeper)
     }
   }
-  828
 }
 
 export const credentialsManager = new CredentialsManager()
+
+export const useCredentialsManager = () => {
+  return {
+    login: (data: any) => {
+      // TODO ssid should be retrieved from the expo-network
+      const ssid = 'ssid'
+      credentialsManager.setCredentials(data, ssid)
+    },
+  }
+}

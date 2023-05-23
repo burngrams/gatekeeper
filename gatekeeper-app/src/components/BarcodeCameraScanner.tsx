@@ -1,10 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, EventEmitter } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { cameraManager } from '../lib/cameraManager';
+import { makeAutoObservable } from 'mobx';
 
-export default function BarcodeCameraScanner() {
-  console.log('BarcodeCameraScanner');
+export class CameraStore {
+
+  _data = null;
+  hasChangedIndex = 0;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+  get data() {
+    return cameraStore._data;
+  }
+  set data(data: any) {
+    cameraStore._data = data;
+    ++cameraStore.hasChangedIndex;
+  }
+}
+
+export const cameraStore = new CameraStore
+
+export function BarcodeCameraScanner() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -18,9 +36,9 @@ export default function BarcodeCameraScanner() {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
     setScanned(true);
-    cameraManager.setData(data);
+    cameraStore.data = JSON.parse(data);
+    console.log(`Bar code with type ${type} and data ${data} has been scanned!`, cameraStore.data.ticketId);
   };
 
   if (hasPermission === null) {

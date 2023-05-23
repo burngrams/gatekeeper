@@ -1,43 +1,92 @@
+import { Button, PlatformColor, StyleSheet } from 'react-native';
 import { Text, View } from 'react-native'
 import { credentialsManager } from '../lib/credentialsManager'
-import BarcodeCameraScanner from './BarcodeCameraScanner'
+import { BarcodeCameraScanner, cameraStore } from './BarcodeCameraScanner'
 import { ticketManager } from '../lib/ticketManager'
 import { observer } from 'mobx-react-lite'
 import { trpcReact } from '../lib/trpcReact'
 import { useEffect } from 'react'
-import { cameraManager } from '../lib/cameraManager'
 import { PagesManager, pagesManager } from '../lib/pagesManager'
+import noop from 'lodash/noop'
+import { autorun, makeAutoObservable, when } from 'mobx';
+
+class ViewModel {
+	constructor() {
+		makeAutoObservable(this)
+	}
+
+	get scannedTicketId() {
+		return cameraStore.data?.ticketId;
+	}
+	get hasScannedTicket() {
+		return !!this.scannedTicketId;
+	}
+	get shouldRefetchTicket() {
+		return cameraStore.hasChangedIndex;
+	}
+}
+
+export const viewModel = new ViewModel()
 
 export const GatekeeperPage = observer(() => {
-	console.log('GatekeeperPage', credentialsManager.credentials)
 	const updateStatus = trpcReact.tickets.updateStatus.useMutation()
 
+	console.log('cameraStore.data', cameraStore.data)
+	console.log('viewModel.scannedTicketId', viewModel.scannedTicketId)
+	console.log('viewModel.shouldRefetchTicket', viewModel.shouldRefetchTicket)
+	console.log('viewModel.hasScannedTicket', viewModel.hasScannedTicket)
+
 	const getTicket = trpcReact.tickets.get.useQuery({
-		ticketId: cameraManager.data?.ticketId
+		ticketId: viewModel.scannedTicketId
 	}, {
-		enabled: !!cameraManager.data?.ticketId,
-		async onSuccess({ ticket }) {
-			console.log('fetched ticket', ticket)
-			const ticketData = await updateStatus.mutateAsync({
-				ticketId: ticket.ticketId,
-				isInside: !ticket.isInside
-			})
-			console.log('mutated ticket', ticketData)
-			ticketManager.setTicket(ticketData)
+		enabled: false, onSuccess(data) {
+			console.log('data', data)
 		},
 	})
 
 	useEffect(() => {
-		getTicket.refetch()
-	}, [cameraManager.i])
+		if (viewModel.hasScannedTicket)
+			getTicket.refetch()
+	}, [viewModel.shouldRefetchTicket])
 
-	return <View style={{ display: 'flex', flexDirection: 'column' }}>
-		<Text>GatekeeperPage</Text>
-		<Text>I am: {credentialsManager.credentials?.fullname}</Text>
-		<Text>ticketing: ID[{ticketManager.currentTicket?.ticketId}]</Text>
-		<Text>ticket status: {ticketManager.currentTicket?.isInside ? 'INside' : 'OUTside'}</Text>
-		<View style={{ display: 'flex', height: '30%' }}>
+	return <View style={styles.container}>
+		<View style={styles.cameraView}>
 			<BarcodeCameraScanner />
 		</View>
-	</View>
+		<View style={styles.skeletonLoader}>
+			<Text style={{ fontSize: 24 }}>ת.ז: {getTicket.data?.ticket.participantId}</Text>
+		</View>
+		<View style={styles.buttonContainer}>
+			<Button color="grey" title="סקיפ" onPress={noop} />
+			<Button color={"green"} title="הכנס" onPress={noop} />
+		</View>
+	</View >
 })
+
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+	cameraView: {
+		margin: 60,
+		flex: 2,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'black',
+	},
+	skeletonLoader: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#eee',
+		padding: 10,
+	},
+	buttonContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'center',
+		padding: 10,
+		backgroundColor: '#ddd',
+	}
+});
