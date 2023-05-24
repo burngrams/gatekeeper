@@ -1,6 +1,7 @@
 import { diff } from 'json-diff'
 import { z } from 'zod'
 import { publicProcedure, router } from '../trpc'
+import { auditlogEventEmitter } from './auditlog.router'
 
 export const tickets = router({
   get: publicProcedure.input(z.object({ ticketId: z.string() })).query((opts) => {
@@ -41,12 +42,14 @@ export const tickets = router({
       ticket.isInside = isInside
       ticket.hasBeenScanned = true
 
-      db.auditlog.push({
+      const operation = {
         operationId: 'ticket-update-status',
-        gatekeeperId: '123456789', // TODO get from session
+        gatekeeperId: '123456789',
         timestamp: new Date(),
         jsondiff: diff({ ticketId: '123', isInside: true }, { ticketId: '123', isInside: false }, { full: true }),
-      })
+      }
+      db.auditlog.push(operation)
+      auditlogEventEmitter.emit('add', operation)
 
       await opts.ctx.lowdb.write()
 

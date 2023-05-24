@@ -6,7 +6,7 @@ import "./CommandPage.css";
 import { Section } from './Section';
 import { json } from 'stream/consumers';
 import { AuditlogModel, OperationLogModel } from '../lib/models';
-import { trpcReact } from './trpc';
+import { trpc, wsClient } from './trpc';
 
 /**
  * takes an auditlog and returns a table JSX element
@@ -14,7 +14,29 @@ import { trpcReact } from './trpc';
  * then it takes each operationlog and creates a tr row with td for each property
  * 
  */
-function auditlogtotable(auditlog: AuditlogModel) {
+function AuditlogTable() {
+	const [auditlogRaw, setAuditlog] = useState<AuditlogModel>([])
+	const auditlog = auditlogRaw.reverse()
+
+	useEffect(() => {
+		const getAuditlog = async () => {
+			const { auditlog } = await trpc.auditlog.get.query();
+			setAuditlog(auditlog)
+		}
+		getAuditlog()
+	}, [])
+
+	useEffect(() => {
+		const disposer = wsClient.auditlog.onAdd.subscribe(undefined, {
+			onData(operationLog) {
+				setAuditlog(auditlog => [...auditlog, operationLog])
+			},
+		})
+
+		return () => disposer.unsubscribe()
+	}, [])
+
+	/* #region creating table elements jsx */
 	const item = auditlog.length ? auditlog[0] : {}
 	const ths = Object.keys(item).map(key => <th>{key}</th>)
 	const trs = auditlog.map(operationLog => {
@@ -26,7 +48,7 @@ function auditlogtotable(auditlog: AuditlogModel) {
 		})
 		return <tr>{tds}</tr>
 	})
-	// im getting caught Error: Objects are not valid as a React child (found: object with keys {ticketId, isInside}). If you meant to render a collection of children, use an array instead.
+	/* #endregion */
 
 	return <table>
 		<thead>
@@ -64,18 +86,6 @@ export function CommandPage() {
 		imgEle.src = qrcode
 	};
 
-	const [auditlog, setAuditlog] = useState<AuditlogModel>([])
-
-	useEffect(() => {
-		const getAuditlog = async () => {
-			console.log(1)
-			const { auditlog } = await trpcReact.auditlog.get.query();
-			console.log(auditlog)
-			setAuditlog(auditlog)
-		}
-		getAuditlog()
-	}, [])
-
 	return (
 		<div className="container">
 			<h1>Welcome to Gatekeeper!</h1>
@@ -104,7 +114,7 @@ export function CommandPage() {
 				</form>
 			</Section>
 			<Section id="auditlog" title="לוג פעולות">
-				{auditlogtotable(auditlog)}
+				<AuditlogTable />
 			</Section>
 		</div>
 	);

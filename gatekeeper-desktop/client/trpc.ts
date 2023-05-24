@@ -1,10 +1,8 @@
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
-import { ipcLink } from 'electron-trpc/renderer'
+import { createTRPCProxyClient, createWSClient, httpBatchLink, wsLink } from '@trpc/client'
 import superjson from 'superjson'
 import { AppRouter } from '../lib'
-import { url } from 'inspector'
 
-export const trpcReact = createTRPCProxyClient<AppRouter>({
+export const trpc = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
   // TODO doesnt work
   // links: [ipcLink()],
@@ -13,4 +11,17 @@ export const trpcReact = createTRPCProxyClient<AppRouter>({
       url: 'http://localhost:3000',
     }),
   ],
+})
+
+const client = createWSClient({
+  url: `ws://10.0.0.15:3000`,
+})
+
+export const wsClient = createTRPCProxyClient<AppRouter>({
+  links: [
+    wsLink({
+      client,
+    }),
+  ],
+  transformer: superjson,
 })
