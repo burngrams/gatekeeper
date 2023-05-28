@@ -8,8 +8,6 @@ import { trpcReact } from '../lib/trpcReact';
 import { BarcodeCameraScanner, cameraStore } from './BarcodeCameraScanner';
 import { TicketModel } from 'gatekeeper-desktop/lib/models';
 import { useQueryClient } from '@tanstack/react-query';
-import { getQueryKey } from '@trpc/react-query';
-import { useErrorBoundary } from 'react-error-boundary';
 
 class ViewModel {
 	constructor() {
@@ -30,13 +28,12 @@ class ViewModel {
 		const text2 = `Particicpant ${ticket.participantId} is now ${ticket.isInside ? 'inside' : 'outside'}`;
 		console.log('Toast:', text2)
 	}
+
 }
 
 export const viewModel = new ViewModel()
 
 export const GatekeeperPage = observer(() => {
-	const { showBoundary } = useErrorBoundary();
-
 	const getTicket = trpcReact.tickets.get.useQuery({
 		ticketId: viewModel.scannedTicketId
 	}, {
@@ -57,24 +54,27 @@ export const GatekeeperPage = observer(() => {
 	const updateStatus = trpcReact.tickets.updateStatus.useMutation()
 	const toggleTicketStatus = async () => {
 		const ticketId = getTicket.data.ticket.ticketId
-		try {
-			const { ticket } = await updateStatus.mutate({ ticketId, isInside: !getTicket.data.ticket.isInside }, {})
-			const queryKey = getQueryKey(trpcReact.tickets.get, { ticketId })
-
-			// rewrite getTicket to use the new data, but it doesnt work
-			console.log('queryDataBefore', queryKey, queryClient.getQueryData(queryKey))
-			queryClient.setQueryData(queryKey, ticket)
-			console.log('queryDataAfter', queryKey, queryClient.getQueryData(queryKey))
-			// show simple toast
+		updateStatus.mutateAsync({ ticketId, isInside: !getTicket.data.ticket.isInside }).then(() => {
 			Toast.show({
 				type: 'success',
 				text1: 'הצלחה',
 			})
 			// worked
 			getTicket.refetch()
-		} catch (error) {
-			showBoundary(error)
-		}
+		}).catch(error => {
+			Toast.show({
+				type: 'error',
+				text1: 'שגיאה',
+				text2: error.message,
+			});
+		});
+		// const queryKey = getQueryKey(trpcReact.tickets.get, { ticketId })
+
+		// // rewrite getTicket to use the new data, but it doesnt work
+		// console.log('queryDataBefore', queryKey, queryClient.getQueryData(queryKey))
+		// queryClient.setQueryData(queryKey, ticket)
+		// console.log('queryDataAfter', queryKey, queryClient.getQueryData(queryKey))
+		// show simple toast
 	}
 
 	const isInside = getTicket.data?.ticket.isInside ?? false
