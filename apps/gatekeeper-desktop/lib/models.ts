@@ -20,6 +20,7 @@ export interface ShiftModel {
 export interface ParticipantModel {
   participantId: string
   fullname: string
+  communityId: string
 }
 
 export interface OperationLogModel {
@@ -30,6 +31,13 @@ export interface OperationLogModel {
   timestamp: Date
 }
 
+export interface CommunityModel {
+  communityId: string
+  name: string
+  currentlyInside: number
+  maxAllowedInside: number
+}
+
 export type AuditlogModel = OperationLogModel[]
 
 export interface DatabaseModel {
@@ -37,4 +45,5 @@ export interface DatabaseModel {
   gatekeepers: GatekeeperModel[]
   participants: ParticipantModel[]
   auditlog: AuditlogModel
+  communities: CommunityModel[]
 }

@@ -1,6 +1,7 @@
 import { Low } from 'lowdb'
 import { DatabaseModel } from '../models'
 
+// TODO rename
 export type DatabaseLayer = Low<DatabaseModel>
 
 export const defaultData: DatabaseModel = {
@@ -15,4 +16,5 @@ export const defaultData: DatabaseModel = {
   gatekeepers: [],
   participants: [],
   auditlog: [],
+  communities: [],
 }

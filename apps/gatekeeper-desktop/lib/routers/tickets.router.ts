@@ -2,6 +2,9 @@ import { diff } from 'json-diff'
 import { z } from 'zod'
 import { publicProcedure, router } from '../trpc'
 import { auditlogEventEmitter } from './auditlog.router'
+import { OperationLogModel } from '../models'
+import { runningInAllocationsMode } from '../settings'
+import { ticketToCommunity } from '../repository/community'
 
 export const tickets = router({
   get: publicProcedure.input(z.object({ ticketId: z.string() })).query((opts) => {
@@ -39,10 +42,23 @@ export const tickets = router({
         throw new Error('Ticket not found')
       }
 
+      // if runningInAllocationsMode,
+      if (runningInAllocationsMode) {
+        // check whether the community is full
+        const community = ticketToCommunity(opts.ctx.lowdb, ticket)
+        const participantWantsInside = !ticket.isInside
+
+        if (participantWantsInside && community.currentlyInside >= community.maxAllowedInside) {
+          throw new Error('Community is full')
+        }
+
+        community.currentlyInside += participantWantsInside ? 1 : -1
+      }
+
       ticket.isInside = isInside
       ticket.hasBeenScanned = true
 
-      const operation = {
+      const operation: OperationLogModel = {
         operationId: 'ticket-update-status',
         gatekeeperId: '123456789',
         timestamp: new Date(),
@@ -51,6 +67,7 @@ export const tickets = router({
       db.auditlog.push(operation)
       auditlogEventEmitter.emit('add', operation)
 
+      // after two changes, we'll write to disk
       await opts.ctx.lowdb.write()
 
       return {
