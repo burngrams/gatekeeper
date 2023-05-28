@@ -35,7 +35,6 @@ export type AuditlogModel = OperationLogModel[]
 export interface DatabaseModel {
   tickets: TicketModel[]
   gatekeepers: GatekeeperModel[]
-  shifts: ShiftModel[]
   participants: ParticipantModel[]
   auditlog: AuditlogModel
 }
