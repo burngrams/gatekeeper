@@ -32,12 +32,6 @@ export const tickets = router({
       })
     )
     .mutation(async (opts) => {
-      throw new TRPCError({
-        code: 'CONFLICT',
-        message: 'הקאמפ הגיע למקסימום הקצאות, אין אפשרות להכניס משתתף!',
-        cause: new Error(),
-      })
-
       const {
         input: { isInside, ticketId },
       } = opts
@@ -56,7 +50,11 @@ export const tickets = router({
         const participantWantsInside = !ticket.isInside
 
         if (participantWantsInside && community.currentlyInside >= community.maxAllowedInside) {
-          throw new Error('Community is full')
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'הקאמפ הגיע למקסימום הקצאות, אין אפשרות להכניס משתתף!',
+            cause: new Error(),
+          })
         }
 
         community.currentlyInside += participantWantsInside ? 1 : -1
