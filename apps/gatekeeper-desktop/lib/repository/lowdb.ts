@@ -4,24 +4,8 @@ import type { DatabaseModel } from '../models'
 import { DatabaseLayer, defaultData } from './data.types'
 import path from 'node:path'
 
-let db: DatabaseLayer = null as any
-
-export function getSyncDatabase() {
-  if (!db) throw new Error('Database not loaded')
-
-  return db
-}
-
-export async function getDatabase() {
-  if (db) return db
-  db = await load()
-
-  return db
-}
-
-async function load(): Promise<typeof db> {
-  const downloadsDirPath = require('downloads-folder')()
-  const file = path.join(downloadsDirPath, 'db.json')
+export const getDatabase = async () => {
+  const file = path.join(require('downloads-folder')(), 'db.json')
 
   // Configure lowdb to write data to JSON file
   const adapter = new JSONFile<DatabaseModel>(file)
@@ -31,5 +15,6 @@ async function load(): Promise<typeof db> {
   // If JSON file doesn't exist, defaultData is used instead
   await db.read()
   await db.write()
+
   return db
 }
