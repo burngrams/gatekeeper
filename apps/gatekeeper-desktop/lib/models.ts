@@ -1,3 +1,5 @@
+import { CommunityModel } from './repository/community'
+
 export interface TicketModel {
   ticketId: string
   participantId: string
@@ -8,13 +10,6 @@ export interface TicketModel {
 export interface GatekeeperModel {
   gatekeeperId: string
   fullname: string
-}
-
-export interface ShiftModel {
-  shiftId: string
-  gatekeeperId: string
-  startTime: Date
-  endTime: Date
 }
 
 export interface ParticipantModel {
@@ -35,7 +30,7 @@ export type AuditlogModel = OperationLogModel[]
 export interface DatabaseModel {
   tickets: TicketModel[]
   gatekeepers: GatekeeperModel[]
-  shifts: ShiftModel[]
   participants: ParticipantModel[]
   auditlog: AuditlogModel
+  communities: CommunityModel[]
 }
