@@ -5,6 +5,7 @@ import { auditlogEventEmitter } from './auditlog.router'
 import { OperationLogModel } from '../models'
 import { runningInAllocationsMode } from '../settings'
 import { ticketToCommunity } from '../repository/community'
+import { TRPCError } from '@trpc/server'
 
 export const tickets = router({
   get: publicProcedure.input(z.object({ ticketId: z.string() })).query((opts) => {
@@ -31,6 +32,12 @@ export const tickets = router({
       })
     )
     .mutation(async (opts) => {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'הקאמפ הגיע למקסימום הקצאות, אין אפשרות להכניס משתתף!',
+        cause: new Error(),
+      })
+
       const {
         input: { isInside, ticketId },
       } = opts

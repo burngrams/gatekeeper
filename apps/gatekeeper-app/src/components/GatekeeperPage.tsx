@@ -9,6 +9,7 @@ import { BarcodeCameraScanner, cameraStore } from './BarcodeCameraScanner';
 import { TicketModel } from 'gatekeeper-desktop/lib/models';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
+import { useErrorBoundary } from 'react-error-boundary';
 
 class ViewModel {
 	constructor() {
@@ -34,10 +35,7 @@ class ViewModel {
 export const viewModel = new ViewModel()
 
 export const GatekeeperPage = observer(() => {
-	console.log('cameraStore.data', cameraStore.data)
-	console.log('viewModel.scannedTicketId', viewModel.scannedTicketId)
-	console.log('viewModel.shouldRefetchTicket', viewModel.shouldRefetchTicket)
-	console.log('viewModel.hasScannedTicket', viewModel.hasScannedTicket)
+	const { showBoundary } = useErrorBoundary();
 
 	const getTicket = trpcReact.tickets.get.useQuery({
 		ticketId: viewModel.scannedTicketId
@@ -59,20 +57,24 @@ export const GatekeeperPage = observer(() => {
 	const updateStatus = trpcReact.tickets.updateStatus.useMutation()
 	const toggleTicketStatus = async () => {
 		const ticketId = getTicket.data.ticket.ticketId
-		const { ticket } = await updateStatus.mutateAsync({ ticketId, isInside: !getTicket.data.ticket.isInside }, {})
-		const queryKey = getQueryKey(trpcReact.tickets.get, { ticketId })
+		try {
+			const { ticket } = await updateStatus.mutate({ ticketId, isInside: !getTicket.data.ticket.isInside }, {})
+			const queryKey = getQueryKey(trpcReact.tickets.get, { ticketId })
 
-		// rewrite getTicket to use the new data, but it doesnt work
-		console.log('queryDataBefore', queryKey, queryClient.getQueryData(queryKey))
-		queryClient.setQueryData(queryKey, ticket)
-		console.log('queryDataAfter', queryKey, queryClient.getQueryData(queryKey))
-		// show simple toast
-		Toast.show({
-			type: 'success',
-			text1: 'הצלחה',
-		})
-		// worked
-		getTicket.refetch()
+			// rewrite getTicket to use the new data, but it doesnt work
+			console.log('queryDataBefore', queryKey, queryClient.getQueryData(queryKey))
+			queryClient.setQueryData(queryKey, ticket)
+			console.log('queryDataAfter', queryKey, queryClient.getQueryData(queryKey))
+			// show simple toast
+			Toast.show({
+				type: 'success',
+				text1: 'הצלחה',
+			})
+			// worked
+			getTicket.refetch()
+		} catch (error) {
+			showBoundary(error)
+		}
 	}
 
 	const isInside = getTicket.data?.ticket.isInside ?? false
