@@ -5,9 +5,9 @@
   "main": "dist-electron/index.js",
   "scripts": {
     "start": "vite",
-    "vite:build": "vite build",
+    "build": "vite build",
     "postinstall": "electron-builder install-app-deps",
-    "build": "npm run vite:build && electron-builder --mac --windows --linux",
+    "build:electron": "electron-builder --mac --windows --linux",
     "release": "electron-builder --mac --windows --linux --publish always"
   },
   "build": {
