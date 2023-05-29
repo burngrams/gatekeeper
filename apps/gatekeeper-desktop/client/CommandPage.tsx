@@ -37,9 +37,7 @@ export function CommandPage() {
 	return (
 		<div className="container">
 			<h1>Welcome to Gatekeeper!</h1>
-			<input type="checkbox" checked={alloactionsModeSetting} value={alloactionsModeSetting ? 'on' : 'off'} onChange={e => {
-				setAllocationsModeSetting(e.target.checked)
-			}} />
+
 			<Section title="יצירת גייטרית" id="create-gatekeeper">
 				<form
 					onSubmit={onSubmitGatekeeper}
@@ -66,6 +64,14 @@ export function CommandPage() {
 			</Section>
 			<Section id="auditlog" title="לוג פעולות">
 				<AuditlogTable />
+			</Section>
+			<Section id="settings" title="הגדרות">
+				<div>
+					<input name="allocations" type="checkbox" checked={alloactionsModeSetting} value={alloactionsModeSetting ? 'on' : 'off'} onChange={e => {
+						setAllocationsModeSetting(e.target.checked)
+					}} />
+					<label htmlFor="allocations">הפעל מצב הקצאה מוקדמת</label>
+				</div>
 			</Section>
 		</div>
 	);
