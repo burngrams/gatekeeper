@@ -32,15 +32,16 @@ export function AuditlogTable() {
 
 	/* #region creating table elements jsx */
 	const item = auditlog.length ? auditlog[0] : {};
-	const ths = Object.keys(item).map(key => <th>{key}</th>);
+	const ths = Object.keys(item).map(key => <th key={key}>{key}</th>);
 	const trs = auditlog.map(operationLog => {
 		const tds = Object.values(operationLog).map(value => {
 			if (typeof value === 'object') {
-				return <td>{JSON.stringify(value)}</td>;
+				const json = JSON.stringify(value);
+				return <td key={json}>{json}</td>;
 			}
-			return <td>{value}</td>;
+			return <td key={value}>{value}</td>;
 		});
-		return <tr>{tds}</tr>;
+		return <tr key={operationLog.timestamp.toString()}>{tds}</tr>;
 	});
 	/* #endregion */
 	return <table>
