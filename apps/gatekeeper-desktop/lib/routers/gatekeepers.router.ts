@@ -17,14 +17,9 @@ export const gatekeepers = router({
     } = opts
     const db = opts.ctx.lowdb.data
 
-    const gatekeeper = db.gatekeepers.find((user) => user.fullname === fullname)
-
-    if (!gatekeeper) {
-      throw new TRPCError({
-        code: 'CONFLICT',
-        message: 'השומר לא נמצא',
-        cause: new Error(),
-      })
+    const gatekeeper = db.gatekeepers.find((user) => user.fullname === fullname) ?? {
+      fullname,
+      isActive,
     }
 
     gatekeeper.isActive = isActive

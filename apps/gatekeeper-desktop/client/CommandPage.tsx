@@ -14,8 +14,6 @@ export function CommandPage() {
 		await formIdToQRImage(id);
 	};
 
-	const [alloactionsModeSetting, setAllocationsModeSetting] = React.useState(electronAPI.allocationsModeSetting ?? false)
-
 	return (
 		<div className="container">
 			<h1>Welcome to Gatekeeper!</h1>

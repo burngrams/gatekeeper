@@ -33,7 +33,6 @@ export const TrpcProvider = ({ children }) => {
 				url,
 			}),
 		],
-
 		transformer: superjson,
 	}));
 
