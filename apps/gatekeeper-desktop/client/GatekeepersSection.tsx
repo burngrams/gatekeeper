@@ -46,7 +46,7 @@ export const GatekeepersSection = observer(() => {
 		<div className="gatekeeper-blocks">
 			{gatekeepers.map(gatekeeper => {
 				return <div className="gatekeeper-block" onClick={() => {
-					viewModel.update({ ...gatekeeper, isActive: !gatekeeper.isActive })
+					dialogViewModel.openModal(gatekeeper)
 				}}>
 					<div className="gatekeeper-block__name">{gatekeeper.fullname}</div>
 					<div className="gatekeeper-block__isActive">{gatekeeper.isActive ? 'active' : 'inactive'}</div>
