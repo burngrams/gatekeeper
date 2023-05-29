@@ -1,11 +1,11 @@
+import { TRPCError } from '@trpc/server'
 import { diff } from 'json-diff'
 import { z } from 'zod'
+import { OperationLogModel } from '../models'
+import { ticketToCommunity } from '../repository/community'
+import { runningInAllocationsMode } from '../settings'
 import { publicProcedure, router } from '../trpc'
 import { auditlogEventEmitter } from './auditlog.router'
-import { OperationLogModel } from '../models'
-import { runningInAllocationsMode } from '../settings'
-import { ticketToCommunity } from '../repository/community'
-import { TRPCError } from '@trpc/server'
 
 export const tickets = router({
   get: publicProcedure.input(z.object({ ticketId: z.string() })).query((opts) => {

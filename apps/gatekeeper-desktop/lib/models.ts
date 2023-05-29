@@ -8,6 +8,7 @@ export interface TicketModel {
 export interface GatekeeperModel {
   gatekeeperId: string
   fullname: string
+  isActive: boolean
 }
 
 export interface ShiftModel {
@@ -25,7 +26,7 @@ export interface ParticipantModel {
 
 export interface OperationLogModel {
   operationId: string
-  gatekeeperId: string
+  gatekeeperId?: string
   // the actual data of what has been modified
   jsondiff: string
   timestamp: Date
