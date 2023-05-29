@@ -1,5 +1,3 @@
-import { ElectronAPI } from '../preload/ElectronAPI'
+import { ClientElectronAPI } from '../preload/ElectronAPI'
 
-export const electronAPI: ElectronAPI = window['electronAPI']
-
-console.log('electronAPI.allocationsModeSetting', electronAPI.allocationsModeSetting)
+export const electronAPI: ClientElectronAPI = window['electronAPI']

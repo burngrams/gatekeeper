@@ -40,10 +40,15 @@ export interface CommunityModel {
 
 export type AuditlogModel = OperationLogModel[]
 
+export interface SettingsModel {
+  runningInAllocationsMode: boolean
+}
+
 export interface DatabaseModel {
   tickets: TicketModel[]
   gatekeepers: GatekeeperModel[]
   participants: ParticipantModel[]
   auditlog: AuditlogModel
   communities: CommunityModel[]
+  settings: SettingsModel
 }

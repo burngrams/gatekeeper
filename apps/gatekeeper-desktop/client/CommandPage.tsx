@@ -32,7 +32,7 @@ export function CommandPage() {
 		imgEle.src = qrcode
 	};
 
-	const [alloactionsModeSetting, setAllocationsModeSetting] = React.useState(electronAPI.allocationsModeSetting)
+	const [alloactionsModeSetting, setAllocationsModeSetting] = React.useState(electronAPI.allocationsModeSetting ?? false)
 
 	return (
 		<div className="container">
@@ -67,10 +67,11 @@ export function CommandPage() {
 			</Section>
 			<Section id="settings" title="הגדרות">
 				<div>
-					<input name="allocations" type="checkbox" checked={alloactionsModeSetting} value={alloactionsModeSetting ? 'on' : 'off'} onChange={e => {
-						setAllocationsModeSetting(e.target.checked)
-					}} />
-					<label htmlFor="allocations">הפעל מצב הקצאה מוקדמת</label>
+					<label htmlFor="allocations">
+						<input name="allocations" type="checkbox" defaultChecked={electronAPI.allocationsModeSetting} onChange={() => {
+							electronAPI.toggleAllocationsModeSetting()
+						}} />
+						הפעל מצב הקצאה מוקדמת</label>
 				</div>
 			</Section>
 		</div>

@@ -1,7 +1,11 @@
-export interface ElectronAPI {
+export interface ClientElectronAPI {
   ip: string
+  allocationsModeSetting: boolean
+  toggleAllocationsModeSetting: () => Promise<void>
+}
+
+export interface ServerElectronAPI {
   getIp: () => Promise<string>
   getAllocationsModeSetting: () => Promise<boolean>
-  allocationsModeSetting: boolean
-  toggleAllocationsModeSetting: (mode: boolean) => Promise<void>
+  toggleAllocationsModeSetting: () => Promise<void>
 }

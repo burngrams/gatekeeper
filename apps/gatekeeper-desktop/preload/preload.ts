@@ -1,14 +1,14 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { exposeElectronTRPC } from 'electron-trpc/main'
-import type { ElectronAPI } from './ElectronAPI'
+import type { ClientElectronAPI } from './ElectronAPI'
 
 process.once('loaded', async () => {
   exposeElectronTRPC()
 
-  const electronAPI: ElectronAPI = {
+  const electronAPI: ClientElectronAPI = {
     ip: await ipcRenderer.invoke('getIp'),
     allocationsModeSetting: await ipcRenderer.invoke('getAllocationsModeSetting'),
-    toggleAllocationsModeSetting: async (mode: boolean) => {
+    toggleAllocationsModeSetting: async () => {
       await ipcRenderer.invoke('toggleAllocationsModeSetting')
     },
   }
