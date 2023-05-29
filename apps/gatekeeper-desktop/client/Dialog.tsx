@@ -8,6 +8,8 @@ import { trpc } from './trpc';
 import { useLocalstorageState } from './useLocalstorageState';
 
 import './Dialog.css';
+import { gatekeepersViewModel } from './GatekeepersSection';
+import { GatekeeperModel } from '../lib/models';
 
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 ReactModal.setAppElement('#react-root');
@@ -24,7 +26,8 @@ class ViewModel {
 	}
 }
 
-export const dialogViewModel = new ViewModel()
+const viewModel = new ViewModel()
+export const dialogViewModel = viewModel
 
 export const Dialog = observer(() => {
 	const [closeAfterAdd, setCloseAfterAdd] = useLocalstorageState('modal-closeAfterAdd', true)
@@ -35,7 +38,7 @@ export const Dialog = observer(() => {
 	}
 
 	function closeModal() {
-		dialogViewModel.isOpen = (false);
+		viewModel.isOpen = (false);
 	}
 
 	const onFormChange = async (formEle: HTMLFormElement): Promise<void> => {
@@ -60,27 +63,21 @@ export const Dialog = observer(() => {
 			closeAfterAdd,
 			...formEntries
 		} = Object.fromEntries(formData.entries());
-		const data = {
+		const gatekeeper = {
 			...formEntries,
 			isActive: formEntries.isActive === 'on' ? true : false
-		} as any;
-
-		try {
-			await trpc.gatekeepers.update.mutate(data);
-
-			if (closeAfterAdd) {
-				closeModal()
-			} else {
-				formEle.reset();
-				onFormChange(formEle);
-			}
-		} catch (error) {
-			alert("שגיאה: " + error.message);
+		} as GatekeeperModel;
+		gatekeepersViewModel.update(gatekeeper)
+		if (closeAfterAdd) {
+			closeModal()
+		} else {
+			formEle.reset();
+			onFormChange(formEle);
 		}
 	};
 
 	return <ReactModal
-		isOpen={dialogViewModel.isOpen}
+		isOpen={viewModel.isOpen}
 		onAfterOpen={afterOpenModal}
 		onRequestClose={closeModal}
 		className="Modal"

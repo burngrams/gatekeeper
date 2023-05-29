@@ -17,12 +17,17 @@ export const gatekeepers = router({
     } = opts
     const db = opts.ctx.lowdb.data
 
-    const gatekeeper = db.gatekeepers.find((user) => user.fullname === fullname) ?? {
-      fullname,
-      isActive,
-    }
+    const gatekeeper = db.gatekeepers.find((user) => user.fullname === fullname)
 
-    gatekeeper.isActive = isActive
+    // if no gatekeeper, create it
+    if (gatekeeper) {
+      gatekeeper.isActive = isActive
+    } else {
+      db.gatekeepers.push({
+        fullname,
+        isActive,
+      })
+    }
 
     db.auditlog.push({
       operationId: 'update-gatekeeper-isActive',

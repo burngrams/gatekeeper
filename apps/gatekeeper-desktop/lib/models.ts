@@ -6,16 +6,10 @@ export interface TicketModel {
 }
 
 export interface GatekeeperModel {
-  gatekeeperId: string
+  // TODO gatekeeperId task
+  // gatekeeperId: string
   fullname: string
   isActive: boolean
-}
-
-export interface ShiftModel {
-  shiftId: string
-  gatekeeperId: string
-  startTime: Date
-  endTime: Date
 }
 
 export interface ParticipantModel {

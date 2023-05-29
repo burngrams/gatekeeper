@@ -36,5 +36,5 @@
 
 #qrcode {
   width: 35vw;
-  height: 35vh;
+  max-width: 300px;
 }

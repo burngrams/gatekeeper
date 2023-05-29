@@ -65,7 +65,8 @@ export const tickets = router({
 
       const operation: OperationLogModel = {
         operationId: 'ticket-update-status',
-        gatekeeperId: '123456789',
+        // TODO gatekeeperId task
+        // gatekeeperId: '123456789',
         timestamp: new Date(),
         jsondiff: diff({ ticketId: '123', isInside: true }, { ticketId: '123', isInside: false }, { full: true }),
       }
