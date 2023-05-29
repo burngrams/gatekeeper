@@ -1,3 +1,4 @@
+// TODO move to root folder for better readability
 import path from 'path'
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { createIPCHandler } from 'electron-trpc/main'
@@ -77,4 +78,8 @@ app.on('ready', () => {
 
   win.show()
   win.webContents.openDevTools()
+
+  const autoUpdater = require('electron-updater')
+
+  autoUpdater.checkForUpdatesAndNotify()
 })

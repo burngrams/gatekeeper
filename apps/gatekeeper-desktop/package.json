@@ -10,20 +10,22 @@
     "build": "npm run vite:build && electron-builder --mac --windows --linux",
     "release": "electron-builder --mac --windows --linux --publish always"
   },
-	"build": {
-		"appId": "com.burngrams.gatekeeper",
-		"productName": "Gatekeeper",
-		"mac": {
-			"category": "public.app-category.lifestyle"
-		},
-		"dmg": {
-			"icon": false
-		},
-		"linux": {
-			"target": ["AppImage"],
-			"category": "Office"
-		}
-	},
+  "build": {
+    "appId": "com.burngrams.gatekeeper",
+    "productName": "Gatekeeper",
+    "mac": {
+      "category": "public.app-category.lifestyle"
+    },
+    "dmg": {
+      "icon": false
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Office"
+    }
+  },
   "dependencies": {
     "@tanstack/react-query": "^4.29.1",
     "@trpc/client": "10.20.0",
@@ -37,6 +39,7 @@
     "downloads-folder": "^3.0.3",
     "electron": "^24.1.1",
     "electron-trpc": "0.5.0",
+    "electron-updater": "^5.3.0",
     "express": "^4.18.2",
     "gatekeeper-mirror": "file:../gatekeeper-mirror",
     "ip": "^1.1.8",
