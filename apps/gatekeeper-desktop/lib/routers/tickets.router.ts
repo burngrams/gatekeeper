@@ -5,7 +5,7 @@ import { OperationLogModel } from '../models'
 import { ticketToCommunity } from '../repository/community'
 import { runningInAllocationsMode } from '../settings'
 import { publicProcedure, router } from '../trpc'
-import { auditlogEventEmitter } from './auditlog.router'
+import { emit } from './auditlog.router'
 
 export const tickets = router({
   get: publicProcedure.input(z.object({ ticketId: z.string() })).query((opts) => {
@@ -70,8 +70,7 @@ export const tickets = router({
         timestamp: new Date(),
         jsondiff: diff({ ticketId: '123', isInside: true }, { ticketId: '123', isInside: false }, { full: true }),
       }
-      db.auditlog.push(operation)
-      auditlogEventEmitter.emit('add', operation)
+      emit(db, operation)
 
       // after two changes, we'll write to disk
       await opts.ctx.lowdb.write()

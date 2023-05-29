@@ -5,6 +5,11 @@ import { publicProcedure, router } from '../trpc'
 
 export const auditlogEventEmitter = new EventEmitter()
 
+export const emit = (db, op: OperationLogModel) => {
+  db.auditlog.push(op)
+  auditlogEventEmitter.emit('add', op)
+}
+
 export const auditlog = router({
   // get procedure that returns all auditlog entries
   get: publicProcedure.query((opts) => {

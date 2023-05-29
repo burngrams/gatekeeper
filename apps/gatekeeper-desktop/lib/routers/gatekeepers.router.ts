@@ -1,7 +1,7 @@
-import { TRPCError } from '@trpc/server'
 import { diff } from 'json-diff'
 import { z } from 'zod'
 import { publicProcedure, router } from '../trpc'
+import { emit } from './auditlog.router'
 
 export const gatekeepers = router({
   get: publicProcedure.query((opts) => {
@@ -29,7 +29,7 @@ export const gatekeepers = router({
       })
     }
 
-    db.auditlog.push({
+    emit(db, {
       operationId: 'update-gatekeeper-isActive',
       jsondiff: diff(gatekeeper, { isActive }),
       timestamp: new Date(),

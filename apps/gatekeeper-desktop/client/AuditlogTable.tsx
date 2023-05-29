@@ -23,7 +23,7 @@ export function AuditlogTable() {
 	useEffect(() => {
 		const disposer = wsClient.auditlog.onAdd.subscribe(undefined, {
 			onData(operationLog) {
-				setAuditlog(auditlog => [...auditlog, operationLog]);
+				setAuditlog(auditlog => [operationLog, ...auditlog]);
 			},
 		});
 
