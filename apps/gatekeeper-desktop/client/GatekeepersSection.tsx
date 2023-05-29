@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { Section } from './Section';
 
+import { makeAutoObservable } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { GatekeeperModel } from '../lib/models';
-import './GatekeepersSection.css';
-import { electronAPI } from './electronAPI';
-import { trpc } from './trpc';
 import { dialogViewModel } from './Dialog';
-import { makeAutoObservable } from 'mobx';
+import './GatekeepersSection.css';
+import { trpc } from './trpc';
 
 class ViewModel {
 	public gatekeepers: GatekeeperModel[] = []
@@ -18,12 +17,6 @@ class ViewModel {
 
 	onFetch(gatekeepers: GatekeeperModel[]) {
 		this.gatekeepers = gatekeepers
-	}
-
-	onAdd(gatekeeper: GatekeeperModel) {
-		// this.gatekeepers.push(gatekeeper)
-
-		this.refetch()
 	}
 
 	refetch() {
