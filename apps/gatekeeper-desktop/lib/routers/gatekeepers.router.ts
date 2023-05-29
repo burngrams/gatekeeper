@@ -29,7 +29,7 @@ export const gatekeepers = router({
       })
     }
 
-    emit(db, {
+    emit(opts.ctx.lowdb, {
       operationId: 'update-gatekeeper-isActive',
       jsondiff: diff(gatekeeper, { isActive }),
       timestamp: new Date(),

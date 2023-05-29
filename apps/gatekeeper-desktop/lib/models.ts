@@ -3,6 +3,7 @@ export interface TicketModel {
   participantId: string
   isInside: boolean
   hasBeenScanned: boolean
+  isCarTicket?: boolean
 }
 
 export interface GatekeeperModel {

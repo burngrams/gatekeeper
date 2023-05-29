@@ -18,24 +18,6 @@ const Home: NextPage = () => {
   }, [])
 
   const data = query.data || {};
-  const table = <table>
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>name</th>
-      </tr>
-    </thead>
-    <tbody>
-      {Object.entries(data).map(datum => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const [key, value] = datum as [string, string]
-        return <tr key={key}>
-          <td><b>{key}</b></td>
-          <td>{value}</td>
-        </tr>
-      })}
-    </tbody>
-  </table>
 
   return (
     <>
@@ -48,11 +30,21 @@ const Home: NextPage = () => {
           <h1 className={styles.title}>
             תשקיף <span className={styles.pinkSpan}>הגייט</span>
           </h1>
-          {Object.entries(data).map(datum => 
+          <div className={styles.cardContainer}>
+            {Object.entries(data).map(([key, value]) =>
+              <div className={styles.cardRow} key={key}>
+                <Link
+                  className={styles.card}
+                  href="#"
+                >
+                  <h3 className={styles.cardTitle}>{key}</h3>
+                  <div className={styles.cardText}>
+                    →→→ {value as any}
+                  </div>
+                </Link>
+              </div>
             )}
-          <p className={styles.showcaseText}>
-            {query.isFetched && table}
-          </p>
+          </div>
         </div>
       </main>
     </>

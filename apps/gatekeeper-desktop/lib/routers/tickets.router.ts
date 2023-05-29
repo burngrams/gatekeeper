@@ -70,7 +70,7 @@ export const tickets = router({
         timestamp: new Date(),
         jsondiff: diff({ ticketId: '123', isInside: true }, { ticketId: '123', isInside: false }, { full: true }),
       }
-      emit(db, operation)
+      emit(opts.ctx.lowdb, operation)
 
       // after two changes, we'll write to disk
       await opts.ctx.lowdb.write()

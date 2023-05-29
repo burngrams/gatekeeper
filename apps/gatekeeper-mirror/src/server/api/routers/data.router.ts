@@ -13,7 +13,14 @@ const key = '/'
 
 export const dataRouter = createTRPCRouter({
   get: publicProcedure.query(async () => {
-    return await kv.get<MirrorModel[]>(key)
+    return await kv.hmget(
+      key,
+      'sumIsInside',
+      'sumHasBeenScanned',
+      'sumTotalTickets',
+      'sumCarIsInside',
+      'sumCarTotalTickets'
+    )
   }),
   set: publicProcedure
     .input(

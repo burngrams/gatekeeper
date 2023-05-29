@@ -72,16 +72,26 @@
   gap: 1rem;
 }
 
-@media (min-width: 640px) {
+/* @media (min-width: 640px) {
   .cardRow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
+} */
 
 @media (min-width: 768px) {
   .cardRow {
     gap: 2rem;
   }
+}
+
+.cardContainer {
+  width: 50%;
+  display: flex;
+  flex: row wrap;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 3rem;
 }
 
 .card {

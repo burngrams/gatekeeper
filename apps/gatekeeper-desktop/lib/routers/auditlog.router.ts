@@ -2,12 +2,15 @@ import { observable } from '@trpc/server/observable'
 import { EventEmitter } from 'events'
 import { OperationLogModel } from '../models'
 import { publicProcedure, router } from '../trpc'
+import { getSums, setSums } from '../../electron/mirror'
+import { DatabaseLayer } from '../repository/data.types'
 
 export const auditlogEventEmitter = new EventEmitter()
 
-export const emit = (db, op: OperationLogModel) => {
-  db.auditlog.push(op)
+export const emit = (db: DatabaseLayer, op: OperationLogModel) => {
+  db.data.auditlog.push(op)
   auditlogEventEmitter.emit('add', op)
+  setSums(getSums(db))
 }
 
 export const auditlog = router({
