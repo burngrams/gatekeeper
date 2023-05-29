@@ -3,7 +3,6 @@ import { diff } from 'json-diff'
 import { z } from 'zod'
 import { OperationLogModel } from '../models'
 import { ticketToCommunity } from '../repository/community'
-import { runningInAllocationsMode } from '../settings'
 import { publicProcedure, router } from '../trpc'
 import { emit } from './auditlog.router'
 
@@ -44,7 +43,7 @@ export const tickets = router({
       }
 
       // if runningInAllocationsMode,
-      if (runningInAllocationsMode) {
+      if (db.settings.runningInAllocationsMode) {
         // check whether the community is full
         const community = ticketToCommunity(opts.ctx.lowdb, ticket)
         const participantWantsInside = !ticket.isInside
