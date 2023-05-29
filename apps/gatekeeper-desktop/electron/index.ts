@@ -13,6 +13,7 @@ import { createExpressMiddleware } from '@trpc/server/adapters/express'
 
 // * IMPORT TRPC WEBSOCKET SERVER (WSS)
 import { applyWSSHandler } from '@trpc/server/adapters/ws'
+import { setupIPCHandlers } from './ipc'
 
 // * IMPORT WEBSOCKET
 // this actually doesnt work, but require does. Maybe related to electron
@@ -66,9 +67,7 @@ app.on('ready', () => {
     },
   })
 
-  createIPCHandler({ router: appRouter, windows: [win] })
-  ipcMain.handle('getIp', () => require('ip').address())
-  console.log(`Running from ${require('ip').address()}...`)
+  setupIPCHandlers(win)
 
   if (url) {
     win.loadURL(url)

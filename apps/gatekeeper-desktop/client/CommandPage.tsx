@@ -5,6 +5,7 @@ import QRCode from 'qrcode';
 import { AuditlogTable } from './AuditlogTable';
 import "./CommandPage.css";
 import { Section } from './Section';
+import { electronAPI } from './electronAPI';
 
 export function CommandPage() {
 	useEffect(() =>
@@ -23,7 +24,7 @@ export function CommandPage() {
 		const formEle = document.querySelector<HTMLFormElement>(`#${id} form`)!
 		const formData = new FormData(formEle)
 		const data = Object.fromEntries(formData.entries())
-		const ip = window['gatekeeper'].ip
+		const ip = electronAPI.ip
 		const json = JSON.stringify({ ...data, ip })
 		const qrcode = await QRCode.toDataURL(json)
 
@@ -31,9 +32,14 @@ export function CommandPage() {
 		imgEle.src = qrcode
 	};
 
+	const [alloactionsModeSetting, setAllocationsModeSetting] = React.useState(electronAPI.allocationsModeSetting)
+
 	return (
 		<div className="container">
 			<h1>Welcome to Gatekeeper!</h1>
+			<input type="checkbox" checked={alloactionsModeSetting} value={alloactionsModeSetting ? 'on' : 'off'} onChange={e => {
+				setAllocationsModeSetting(e.target.checked)
+			}} />
 			<Section title="יצירת גייטרית" id="create-gatekeeper">
 				<form
 					onSubmit={onSubmitGatekeeper}
