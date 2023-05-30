@@ -16,8 +16,9 @@
     "skipLibCheck": true,
     "strict": true,
     "allowJs": true,
-    "target": "esnext"
+    "target": "esnext",
+    "strict": true
   },
-  "include": ["./*.ts", "./*.tsx"],
+  "include": ["./**/*.ts", "./**/*.tsx"],
   "exclude": ["node_modules"]
 }

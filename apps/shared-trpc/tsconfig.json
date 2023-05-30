@@ -7,7 +7,6 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -17,16 +16,8 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    "composite": true,
+    "noEmit": false
   },
-  "references": [
-    {
-      "path": "../shared-trpc",
-      "outputPath": "./shared-trpc"
-    }
-  ],
-  "include": [".eslintrc.cjs", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
-  "exclude": ["node_modules"]
+  "include": ["./**/*.ts"]
 }

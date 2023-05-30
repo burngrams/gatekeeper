@@ -1,6 +1,5 @@
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
-import { appRouter } from 'gatekeeper-mirror/src/server/api/appRouter'
-import { MirrorModel } from 'gatekeeper-mirror/src/server/api/routers/data.router'
+import { AppRouter, MirrorModel } from '../../shared-trpc/vercel.trpc'
 import SuperJSON from 'superjson'
 import { DatabaseLayer } from '../lib/repository/data.types'
 
@@ -13,7 +12,7 @@ const getBaseUrl = () => {
 const baseUrl = getBaseUrl()
 console.log('🚀 ~ file: mirror.ts:14 ~ baseUrl:', baseUrl)
 
-export const trpc = createTRPCProxyClient<typeof appRouter>({
+export const trpc = createTRPCProxyClient<AppRouter>({
   transformer: SuperJSON,
   links: [
     httpBatchLink({

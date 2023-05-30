@@ -1,10 +1,9 @@
 import { createNextApiHandler } from '@trpc/server/adapters/next'
 import { env } from '~/env.mjs'
-import { appRouter } from '~/server/api/appRouter'
-import { createTRPCContext } from '~/server/api/trpc'
+import { type AppRouter, appRouter, createTRPCContext } from '../../../../../shared-trpc/vercel.trpc'
 
 // export API handler
-export default createNextApiHandler({
+export default createNextApiHandler<AppRouter>({
   router: appRouter,
   createContext: createTRPCContext,
   onError:

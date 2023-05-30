@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@trpc/server": "^10.26.0",
+    "@vercel/kv": "^0.2.1",
+    "superjson": "1.12.2",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.0",
+    "typescript": "^5.0.4"
+  }
+}

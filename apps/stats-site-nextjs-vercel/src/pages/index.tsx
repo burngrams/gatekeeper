@@ -5,7 +5,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect } from 'react';
-import { api } from "~/utils/api";
+import { api } from '../utils/api';
 
 const Home: NextPage = () => {
   const query = api.data.get.useQuery();
