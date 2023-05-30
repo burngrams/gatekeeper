@@ -7,6 +7,7 @@ import { generateContext } from '../lib/trpc/context'
 import { getDatabase } from '../lib/repository/lowdb'
 import express from 'express'
 import cors from 'cors'
+import autoUpdater from 'electron-updater'
 
 // IMPORT TRPC SERVER
 // npm i @trpc/server
@@ -79,7 +80,5 @@ app.on('ready', () => {
   win.show()
   win.webContents.openDevTools()
 
-  const autoUpdater = require('electron-updater')
-
-  autoUpdater.checkForUpdatesAndNotify()
+  // autoUpdater.checkForUpdatesAndNotify()
 })
