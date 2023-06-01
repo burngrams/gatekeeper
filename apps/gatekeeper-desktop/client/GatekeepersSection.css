@@ -19,24 +19,83 @@ tfoot {
 tfoot th {
   font-weight: normal;
 }
+
 .gatekeeper-blocks {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  align-content: space-between;
-  width: 100%;
-  height: 100%;
-  gap: 30px;
-}
-.gatekeeper-block {
-  background-color: #4d4d4d;
-  width: 100px;
-  height: 100px;
+  margin: 0 auto;
+  margin-top: 40px;
+  width: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  align-content: space-between;
+  height: 100%;
+  gap: 16px;
+}
+
+.gatekeeper-block {
+  box-sizing: border-box;
+  padding: 16px;
+  border: solid 1px #e8edf2;
+  width: 100%;
+  height: 72px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  font-size: 24px;
+  font-size: 16px;
   cursor: pointer;
+  border-radius: 4px;
+}
+
+.controls {
+  margin: 0 auto;
+  width: 400px;
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.leftside {
+  display: flex;
+  gap: 8px;
+}
+
+.rightside {
+  margin-left: auto;
+}
+
+.gatekeeper-block__name {
+  display: flex;
+  gap: 8px;
+}
+
+.header-and-subheader {
+  display: flex;
+  flex-direction: column;
+  /* gap: 4px; */
+  align-items: flex-end;
+}
+.header-and-subheader span:first-child {
+  font-weight: bold;
+  line-height: 24px;
+}
+.header-and-subheader span:last-child {
+  font-size: 16px;
+  line-height: 24px;
+  color: gray;
+  gap: 8px;
+  display: flex;
+  align-items: center;
+}
+.header-and-subheader span.box-indicator {
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 4px;
+  width: 6px;
+  height: 6px;
+  background-color: red;
+}
+.header-and-subheader .box-indicator[data-active='true'] {
+  background-color: #29bf12;
 }

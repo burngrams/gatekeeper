@@ -10,6 +10,7 @@ export interface GatekeeperModel {
   // gatekeeperId: string
   fullname: string
   isActive: boolean
+  // we generate QR code from these two
 }
 
 export interface ParticipantModel {

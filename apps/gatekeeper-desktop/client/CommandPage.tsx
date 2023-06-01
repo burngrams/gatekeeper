@@ -16,22 +16,29 @@ export function CommandPage() {
 
 	return (
 		<div className="container">
-			<h1>Welcome to Gatekeeper!</h1>
+			<div className="controls">
+				<div className="leftside">
+					<div>לוג</div>
+					<div>הגדרות</div>
+					<div>ברקוד</div>
+				</div>
+				<div className="rightside">וולקאם</div>
+			</div>
 			<GatekeepersSection />
-			<Section id="create-ticket" title="צור ברקוד לכרטיס (לטובת הדרכה)">
-				<form
+			<Section id="create-ticket" title="צור ברקוד לדוגמא">
+				{/* <form
 					style={{ display: "flex", flexDirection: "column" }}
 					onSubmit={onSubmitCreateTicket}
 				>
 					<input type="tel" name="ticketId" placeholder="ticketId" required defaultValue="always-existing-test-id" />
-					<button type="submit">בואי נחולל</button>
+					<button type="submit">fבואי נחולל</button>
 					<img width="150" height="150" />
-				</form>
+				</form> */}
 			</Section>
-			<Section id="auditlog" title="לוג פעולות">
+			{/* <Section id="auditlog" title="לוג פעולות">
 				<AuditlogTable />
-			</Section>
-			<Section id="settings" title="הגדרות">
+			</Section> */}
+			{/* <Section id="settings" title="הגדרות">
 				<div>
 					<label htmlFor="allocations">
 						<input name="allocations" type="checkbox" defaultChecked={electronAPI.allocationsModeSetting} onChange={() => {
@@ -39,7 +46,7 @@ export function CommandPage() {
 						}} />
 						הפעל מצב הקצאה מוקדמת</label>
 				</div>
-			</Section>
+			</Section> */}
 		</div>
 	);
 }
