@@ -48,10 +48,12 @@ export const GatekeepersSection = observer(() => {
 
 	return <div className="gatekeeper-blocks">
 		<button className="gatekeeper-block" onClick={() => dialogViewModel.openModal()}>
-			{addSvg}
+			<span>הוסף גייטר</span>
+			<img src="https://thenounproject.com/api/private/icons/961411/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0&token=gAAAAABkeJn9HN7VMe8IYl-_MtvnfjeBFUMKaral2lPFcgssPIlpRbQ811Lxm9LCcKHfsaapPCxwPcwXDj4iIy6uIw7spxrsqg%3D%3D" width={40} height={40} />
+
 		</button>
 		{gatekeepers.map(gatekeeper => {
-			return <div className="gatekeeper-block">
+			return <div className="gatekeeper-block gatekeeper-block-gater">
 				<div className="gatekeeper-block__isActive">
 					<Switch checked={gatekeeper.isActive} onChange={e =>
 						viewModel.update({ ...gatekeeper, isActive: !gatekeeper.isActive })

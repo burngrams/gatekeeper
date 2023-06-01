@@ -25,7 +25,7 @@ export function CommandPage() {
 				<div className="rightside">וולקאם</div>
 			</div>
 			<GatekeepersSection />
-			<Section id="create-ticket" title="צור ברקוד לדוגמא">
+			<Section id="create-ticket" title="">
 				{/* <form
 					style={{ display: "flex", flexDirection: "column" }}
 					onSubmit={onSubmitCreateTicket}

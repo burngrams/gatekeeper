@@ -42,11 +42,14 @@ tfoot th {
   height: 72px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   font-size: 16px;
   cursor: pointer;
   border-radius: 4px;
+  justify-content: flex-end;
+}
+.gatekeeper-block-gater {
+  justify-content: space-between;
 }
 
 .controls {
@@ -98,4 +101,8 @@ tfoot th {
 }
 .header-and-subheader .box-indicator[data-active='true'] {
   background-color: #29bf12;
+}
+
+button {
+  box-shadow: none;
 }

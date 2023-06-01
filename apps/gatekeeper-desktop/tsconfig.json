@@ -18,6 +18,7 @@
     "allowJs": true,
     "target": "esnext"
   },
+  "types": ["vite-plugin-svgr/client"],
   "include": ["./*.ts", "./*.tsx"],
   "exclude": ["node_modules"]
 }
