@@ -28,9 +28,16 @@ class ViewModel {
 		})
 	}
 
-	update(gatekeeper: GatekeeperModel) {
+	private update(gatekeeper: GatekeeperModel) {
 		trpc.gatekeepers.update.mutate(gatekeeper).then(() => {
 			this.refetch()
+		})
+	}
+
+	public toggleShift(gatekeeper: GatekeeperModel) {
+		this.update({
+			...gatekeeper,
+			isActive: !gatekeeper.isActive
 		})
 	}
 }
@@ -46,28 +53,31 @@ export const GatekeepersSection = observer(() => {
 		viewModel.refetch()
 		, []);
 
-	return <div className="gatekeeper-blocks">
-		<button className="gatekeeper-block" onClick={() => dialogViewModel.openModal()}>
-			<span>הוסף גייטר</span>
-			<img src="https://thenounproject.com/api/private/icons/961411/edit/?backgroundShape=SQUARE&backgroundShapeColor=%23000000&backgroundShapeOpacity=0&exportSize=752&flipX=false&flipY=false&foregroundColor=%23000000&foregroundOpacity=1&imageFormat=png&rotation=0&token=gAAAAABkeJn9HN7VMe8IYl-_MtvnfjeBFUMKaral2lPFcgssPIlpRbQ811Lxm9LCcKHfsaapPCxwPcwXDj4iIy6uIw7spxrsqg%3D%3D" width={40} height={40} />
-
-		</button>
-		{gatekeepers.map(gatekeeper => {
-			return <div className="gatekeeper-block gatekeeper-block-gater">
-				<div className="gatekeeper-block__isActive">
-					<Switch checked={gatekeeper.isActive} onChange={e =>
-						viewModel.update({ ...gatekeeper, isActive: !gatekeeper.isActive })
-					} />
+	return <div className="gatekeeper-container">
+		<div className="gatekeeper-hr" />
+		<div dir="rtl" className="gatekeeper-block-header">
+			<span>כל הגייטרים</span>
+		</div>
+		<div className="gatekeeper-blocks">
+			{gatekeepers.map(gatekeeper => {
+				return <div className="gatekeeper-block gatekeeper-block-gater">
+					<div className="header-and-subheader">
+						<span>
+							<a onClick={() => viewModel.toggleShift(gatekeeper)}>{
+								gatekeeper.isActive ? 'ירידת משמרת' : 'עליית משמרת'
+							}</a>
+						</span>
+					</div>
+					<div className="header-and-subheader">
+						<span className=''>{gatekeeper.fullname}</span>
+						<span className="gatekeeper__active">
+							{gatekeeper.isActive ? 'פעיל' : 'לא פעיל'}
+							<span data-active={gatekeeper.isActive} className="box-indicator"></span>
+						</span>
+					</div>
 				</div>
-				<div className="header-and-subheader">
-					<span className=''>{gatekeeper.fullname}</span>
-					<span>
-						{gatekeeper.isActive ? 'פעיל' : 'לא פעיל'}
-						<span data-active={gatekeeper.isActive} className="box-indicator"></span>
-					</span>
-				</div>
-			</div>;
-		})}
+			})}
+		</div>
 	</div>
 })
 

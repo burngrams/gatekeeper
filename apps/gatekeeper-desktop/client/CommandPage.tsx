@@ -21,8 +21,12 @@ export function CommandPage() {
 					<div>לוג</div>
 					<div>הגדרות</div>
 					<div>ברקוד</div>
+					<div>הוסף גייטר</div>
 				</div>
 				<div className="rightside">וולקאם</div>
+			</div>
+			<div className="gatekeeper-search-controls">
+				<input dir="rtl" className="search" type="text" placeholder='חיפוש...' />
 			</div>
 			<GatekeepersSection />
 			<Section id="create-ticket" title="">
